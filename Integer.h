@@ -503,7 +503,9 @@ class Integer {
          * @throws invalid_argument if ((this == 0) && (e == 0)) or (e < 0)
          */
         Integer& pow (int e) {
-            // <your code>
+            if(((this == 0) && (e == 0)) || (e < 0))
+                throw std::invalid_argument("Invalid Argument to the call.");
+
             return *this;}};
 
 #endif // Integer_h

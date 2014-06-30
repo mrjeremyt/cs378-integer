@@ -55,7 +55,7 @@ To obtain coverage of the test:
 // shift_left_digits
 // -----------------
 
-TEST(Integer, shift_left_digits) {
+TEST(Integer, shift_left_digits_1) {
     const int a[] = {2, 3, 4};
     const int b[] = {2, 3, 4, 0, 0};
           int x[10];
@@ -63,11 +63,28 @@ TEST(Integer, shift_left_digits) {
     ASSERT_EQ(5, p - x);
     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, b));}
 
+TEST(Integer, shift_left_digits_2) {
+    const int a[] = {2};
+    const int b[] = {2, 0, 0};
+          int x[10];
+    const int* p = shift_left_digits(a, a + 1, 2, x);
+    ASSERT_EQ(3, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, b));}
+
+
+TEST(Integer, shift_left_digits_3) {
+    const int a[] = {2, 3, 4, 5, 6, 7};
+    const int b[] = {2, 3, 4, 5, 6, 7, 0, 0, 0};
+          int x[10];
+    const int* p = shift_left_digits(a, a + 6, 3, x);
+    ASSERT_EQ(9, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, b));}
+
 // ------------------
 // shift_right_digits
 // ------------------
 
-TEST(Integer, shift_right_digits) {
+TEST(Integer, shift_right_digits_1) {
     const int a[] = {2, 3, 4};
     const int b[] = {2};
           int x[10];
@@ -75,11 +92,29 @@ TEST(Integer, shift_right_digits) {
     ASSERT_EQ(1, p - x);
     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, b));}
 
+TEST(Integer, shift_right_digits_2) {
+    const int a[] = {2, 3, 4};
+    const int b[] = {2, 3};
+          int x[10];
+    const int* p = shift_right_digits(a, a + 3, 1, x);
+    ASSERT_EQ(2, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, b));}
+
+
+TEST(Integer, shift_right_digits_3) {
+    const int a[] = {2, 3, 4, 5, 6, 7, 8, 9};
+    const int b[] = {2, 3};
+          int x[10];
+    const int* p = shift_right_digits(a, a + 3, 6, x);
+    ASSERT_EQ(2, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, b));}
+
+
 // -----------
 // plus_digits
 // -----------
 
-TEST(Integer, plus_digits) {
+TEST(Integer, plus_digits_1) {
     const int a[] = {2, 3, 4};
     const int b[] = {5, 6, 7};
     const int c[] = {8, 0, 1};
@@ -88,11 +123,29 @@ TEST(Integer, plus_digits) {
     ASSERT_EQ(3, p - x);
     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
 
+TEST(Integer, plus_digits_2) {
+    const int a[] = {1};
+    const int b[] = {1};
+    const int c[] = {2};
+          int x[10];
+    const int* p = plus_digits(a, a + 1, b, b + 1, x);
+    ASSERT_EQ(1, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+TEST(Integer, plus_digits_3) {
+    const int a[] = {9, 9, 8};
+    const int b[] = {3};
+    const int c[] = {1, 0, 0, 1};
+          int x[10];
+    const int* p = plus_digits(a, a + 3, b, b + 1, x);
+    ASSERT_EQ(4, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
 // ------------
 // minus_digits
 // ------------
 
-TEST(Integer, minus_digits) {
+TEST(Integer, minus_digits_1) {
     const int a[] = {8, 0, 1};
     const int b[] = {5, 6, 7};
     const int c[] = {2, 3, 4};
@@ -101,11 +154,30 @@ TEST(Integer, minus_digits) {
     ASSERT_EQ(3, p - x);
     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
 
+TEST(Integer, minus_digits_2) {
+    const int a[] = {2};
+    const int b[] = {1};
+    const int c[] = {1};
+          int x[10];
+    const int* p = minus_digits(a, a + 1, b, b + 1, x);
+    ASSERT_EQ(1, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+TEST(Integer, minus_digits_3) {
+    const int a[] = {1, 0, 0, 0};
+    const int b[] = {1};
+    const int c[] = {9, 9, 9};
+          int x[10];
+    const int* p = minus_digits(a, a + 4, b, b + 1, x);
+    ASSERT_EQ(3, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+
 // -----------------
 // multiplies_digits
 // -----------------
 
-TEST(Integer, multiplies_digits) {
+TEST(Integer, multiplies_digits_1) {
     const int a[] = {2, 3, 4};
     const int b[] = {5, 6, 7};
     const int c[] = {1, 3, 2, 6, 7, 8};
@@ -114,11 +186,47 @@ TEST(Integer, multiplies_digits) {
     ASSERT_EQ(6, p - x);
     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
 
+TEST(Integer, multiplies_digits_2) {
+    const int a[] = {1};
+    const int b[] = {2};
+    const int c[] = {2};
+          int x[10];
+    const int* p = multiplies_digits(a, a + 1, b, b + 1, x);
+    ASSERT_EQ(1, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+TEST(Integer, multiplies_digits_3) {
+    const int a[] = {9};
+    const int b[] = {9};
+    const int c[] = {8, 1};
+          int x[10];
+    const int* p = multiplies_digits(a, a + 1, b, b + 1, x);
+    ASSERT_EQ(2, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}    
+
 // --------------
 // divides_digits
 // --------------
 
-TEST(Integer, divides_digits) {
+TEST(Integer, divides_digits_1) {
+    const int a[] = {1, 3, 2, 6, 7, 8};
+    const int b[] = {5, 6, 7};
+    const int c[] = {2, 3, 4};
+          int x[10];
+    const int* p = divides_digits(a, a + 6, b, b + 3, x);
+    ASSERT_EQ(3, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+TEST(Integer, divides_digits_2) {
+    const int a[] = {1, 3, 2, 6, 7, 8};
+    const int b[] = {5, 6, 7};
+    const int c[] = {2, 3, 4};
+          int x[10];
+    const int* p = divides_digits(a, a + 6, b, b + 3, x);
+    ASSERT_EQ(3, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+TEST(Integer, divides_digits_3) {
     const int a[] = {1, 3, 2, 6, 7, 8};
     const int b[] = {5, 6, 7};
     const int c[] = {2, 3, 4};
@@ -172,11 +280,29 @@ TEST(Integer, abs_2) {
     catch (std::invalid_argument& e) {
         ASSERT_TRUE(false);}}
 
+TEST(Integer, abs_3) {
+    try {
+        Integer<int>  x = 98765;
+        Integer<int>& y = x.abs();
+        ASSERT_EQ(98765, x);
+        ASSERT_EQ(&x,    &y);}
+    catch (std::invalid_argument& e) {
+        ASSERT_TRUE(false);}}
+
+TEST(Integer, abs_4) {
+    try {
+        const Integer<int> x = 98765;
+        const Integer<int> y = abs(x);
+        ASSERT_EQ(-98765, x);
+        ASSERT_EQ( 98765, y);}
+    catch (std::invalid_argument& e) {
+        ASSERT_TRUE(false);}}
+
 // --------
 // equal_to
 // --------
 
-TEST(Integer, equal_to) {
+TEST(Integer, equal_to_1) {
     try {
         const Integer<int> x = 98765;
         const Integer<int> y = 98765;
@@ -186,11 +312,21 @@ TEST(Integer, equal_to) {
     catch (std::invalid_argument& e) {
         ASSERT_TRUE(false);}}
 
+TEST(Integer, equal_to_2) {
+    try {
+        const Integer<int> x = 55;
+        const Integer<int> y = 55;
+        ASSERT_EQ(   x, y);
+        ASSERT_EQ(   x, 55);
+        ASSERT_EQ(  55, x);}
+    catch (std::invalid_argument& e) {
+        ASSERT_TRUE(false);}}
+
 // --------
 // negation
 // --------
 
-TEST(Integer, negation) {
+TEST(Integer, negation_1) {
     try {
         const Integer<int> x = 98765;
         const Integer<int> y = -x;
@@ -198,16 +334,50 @@ TEST(Integer, negation) {
     catch (std::invalid_argument& e) {
         ASSERT_TRUE(false);}}
 
+TEST(Integer, negation_2) {
+    try {
+        const Integer<int> x = -2;
+        const Integer<int> y = -x;
+        ASSERT_EQ(2, y);}
+    catch (std::invalid_argument& e) {
+        ASSERT_TRUE(false);}}
+
+TEST(Integer, negation_3) {
+    try {
+        const Integer<int> x = 55;
+        const Integer<int> y = -x;
+        ASSERT_EQ(-55, y);}
+    catch (std::invalid_argument& e) {
+        ASSERT_TRUE(false);}}
+
 // ------
 // output
 // ------
 
-TEST(Integer, output) {
+TEST(Integer, output_1) {
     try {
         const Integer<int> x = 98765;
         std::ostringstream out;
         out << x;
         ASSERT_EQ("98765", out.str());}
+    catch (std::invalid_argument& e) {
+        ASSERT_TRUE(false);}}
+
+TEST(Integer, output_2) {
+    try {
+        const Integer<int> x = -1;
+        std::ostringstream out;
+        out << x;
+        ASSERT_EQ("-1", out.str());}
+    catch (std::invalid_argument& e) {
+        ASSERT_TRUE(false);}}
+
+TEST(Integer, output_3) {
+    try {
+        const Integer<int> x = 55;
+        std::ostringstream out;
+        out << x;
+        ASSERT_EQ("55", out.str());}
     catch (std::invalid_argument& e) {
         ASSERT_TRUE(false);}}
 
@@ -233,6 +403,28 @@ TEST(Integer, pow_2) {
         const Integer<int> y = pow(x, e);
         ASSERT_EQ(98765, x);
         ASSERT_EQ( 9867, e);
+        ASSERT_EQ(    0, y);}
+    catch (std::invalid_argument& e) {
+        ASSERT_TRUE(false);}}
+
+TEST(Integer, pow_3) {
+    try {
+        Integer<int>       x = 98765;
+        const int          e = 1;
+        Integer<int>&      y = x.pow(e);
+        ASSERT_EQ(1,  e);
+        ASSERT_EQ(   0,  x);
+        ASSERT_EQ(  &x, &y);}
+    catch (std::invalid_argument& e) {
+        ASSERT_TRUE(false);}}
+
+TEST(Integer, pow_4) {
+    try {
+        const Integer<int> x = 98765;
+        const int          e =  0;
+        const Integer<int> y = pow(x, e);
+        ASSERT_EQ(98765, x);
+        ASSERT_EQ( 0, e);
         ASSERT_EQ(    0, y);}
     catch (std::invalid_argument& e) {
         ASSERT_TRUE(false);}}
