@@ -145,10 +145,10 @@ class Integer {
 
     /**
      * <your documentation>
+     * uses the default == to confirm equality
      */
     friend bool operator == (const Integer& lhs, const Integer& rhs) {
-        // <your code>
-        return false;}
+        return lhs._x == rhs._x;}
 
     // -----------
     // operator !=
@@ -316,6 +316,7 @@ class Integer {
 
         C _x; // the backing container
         // <your data>
+        bool positive;
 
     private:
         // -----
