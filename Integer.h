@@ -32,7 +32,8 @@
  */
 template <typename II, typename OI>
 OI shift_left_digits (II b, II e, int n, OI x) {
-    // <your code>
+    while(b != e){*x++ = *b++;}
+    while(n-- > 0){*x++ = 0;}
     return x;}
 
 // ------------------
