@@ -34,7 +34,7 @@ RunInteger.out: RunInteger
 	cat         RunInteger.c++.gcov
 
 TestInteger: Integer.h TestInteger.c++
-	g++-4.7 -fprofile-arcs -ftest-coverage -pedantic -std=c++11 -Wall TestInteger.c++ -o TestInteger -lgtest -lgtest_main -lpthread
+	g++-4.7 -fprofile-arcs -ftest-coverage -pedantic -std=c++11 -ggdb3 -Wall TestInteger.c++ -o TestInteger -lgtest -lgtest_main -lpthread
 
 TestInteger.out: TestInteger
 	-valgrind TestInteger

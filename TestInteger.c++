@@ -103,10 +103,10 @@ TEST(Integer, shift_right_digits_2) {
 
 TEST(Integer, shift_right_digits_3) {
     const int a[] = {2, 3, 4, 5, 6, 7, 8, 9};
-    const int b[] = {2, 3};
+    const int b[] = {2, 3, 4};
           int x[10];
-    const int* p = shift_right_digits(a, a + 3, 6, x);
-    ASSERT_EQ(2, p - x);
+    const int* p = shift_right_digits(a, a + 8, 5, x);
+    ASSERT_EQ(3, p - x);
     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, b));}
 
 

@@ -51,7 +51,8 @@ OI shift_left_digits (II b, II e, int n, OI x) {
  */
 template <typename II, typename OI>
 OI shift_right_digits (II b, II e, int n, OI x) {
-    // <your code>
+    while(n-- > 0){ --e; }
+    while(b != e){ *x++ = *b++; }
     return x;}
 
 // -----------
