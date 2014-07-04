@@ -17,6 +17,9 @@
 #include <string>    // string
 #include <vector>    // vector
 #include <deque>     // deque
+#include <math.h>
+
+using namespace std;
 
 // -----------------
 // shift_left_digits
@@ -74,48 +77,64 @@ OI shift_right_digits (II b, II e, int n, OI x) {
 template <typename II1, typename II2, typename OI>
 OI plus_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
     bool overflow = false;
-    std::deque<int> num1;
-    std::deque<int> num2;
+    int count = 0;
+    std::vector<int> num1;
+    std::vector<int> num2;
     std::deque<int> result;
-    while(b1 != e1){num1.push_front(*b1++);}
-    while(b2 != e2){num2.push_front(*b2++);}
-    int bottom = std::min(num2.size(), num1.size());
-    if((int)num1.size() == bottom){
+    while(b1 != e1){num1.push_back(*b1++);}
+    while(b2 != e2){num2.push_back(*b2++);}
+    int top = std::max(num2.size(), num1.size());
+    if((int)num1.size() == top){
+        auto min = num2.rbegin();
         for(int i = num1.size()-1; i >= 0; i--){
-            int to_insert = (num1[i] + num2[i]);
-            if(overflow){
-                overflow = false;
-                to_insert += 1;
+            if(count++ >= (int)num2.size()){
+                int add = num1[i];
+                if(overflow){
+                    overflow = false;
+                    add += 1;}
+                if(add > 9){
+                    overflow = true;
+                    result.push_front(add % 10);
+                }else{result.push_front(add);  }
+            }else{
+                int to_insert = (num1[i] + *min++);
+                if(overflow){
+                    overflow = false;
+                    to_insert += 1;}
+                if(to_insert > 9){
+                    overflow = true;
+                    to_insert = to_insert % 10;
+                    result.push_front(to_insert);
+                }else{ result.push_front(to_insert); }
             }
-            if(to_insert > 9){
-                overflow = true;
-                if(to_insert == 10){to_insert = 0;}
-                else{to_insert = ceil(to_insert % 10);}
-                result.push_front(to_insert);
-            }else{ result.push_front(to_insert); }
-        }
-        if(num1.size() != num2.size()){
-
         }
     }else{
+        auto min = num1.rbegin();
         for(int i = num2.size()-1; i >= 0; i--){
-            int to_insert = (num1[i] + num2[i]);
-            if(overflow){
-                overflow = false;
-                to_insert += 1;
+            if(count++ >= (int)num1.size()){
+                int add = num2[i];
+                if(overflow){
+                    overflow = false;
+                    add += 1;}
+                if(add > 9){
+                    overflow = true;
+                    result.push_front(add % 10);
+                }else{result.push_front(add);  }
+            }else{
+                int to_insert = (num2[i] + *min++);
+                if(overflow){
+                    overflow = false;
+                    to_insert += 1;}
+                if(to_insert > 9){
+                    overflow = true;
+                    to_insert = to_insert % 10;
+                    result.push_front(to_insert);
+                }else{ result.push_front(to_insert); }
             }
-            if(to_insert > 9){
-                overflow = true;
-                if(to_insert == 10){to_insert = 0;}
-                else{to_insert = ceil(to_insert % 10);}
-                result.push_front(to_insert);
-            }else{ result.push_front(to_insert); }
-        }
-        if(num1.size() != num2.size()){
-
         }
     }
-
+    if(overflow){result.push_front(1);}
+    for(int i = 0; i < (int)result.size(); i++){*x++ = result[i];}
     return x;}
 
 // ------------

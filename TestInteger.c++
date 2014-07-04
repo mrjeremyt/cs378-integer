@@ -141,6 +141,25 @@ TEST(Integer, plus_digits_3) {
     ASSERT_EQ(4, p - x);
     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
 
+TEST(Integer, plus_digits_4) {
+    const int a[] = {0};
+    const int b[] = {1, 1};
+    const int c[] = {1, 1};
+          int x[10];
+    const int* p = plus_digits(a, a+1, b, b + 2, x);
+    ASSERT_EQ(2, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+ 
+TEST(Integer, plus_digits_5) {
+    const int a[] = {9, 9};
+    const int b[] = {9, 9, 9};
+    const int c[] = {1, 0, 9 ,8};
+          int x[10];
+    const int* p = plus_digits(a, a+2, b, b + 3, x);
+    ASSERT_EQ(4, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+
 // ------------
 // minus_digits
 // ------------
