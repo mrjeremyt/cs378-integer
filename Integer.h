@@ -78,9 +78,9 @@ template <typename II1, typename II2, typename OI>
 OI plus_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
     bool overflow = false;
     int count = 0;
-    std::vector<int> num1;
-    std::vector<int> num2;
-    std::deque<int> result;
+    vector<int> num1;
+    vector<int> num2;
+    deque<int> result;
     while(b1 != e1){num1.push_back(*b1++);}
     while(b2 != e2){num2.push_back(*b2++);}
     int top = std::max(num2.size(), num1.size());
@@ -156,93 +156,61 @@ template <typename II1, typename II2, typename OI>
 OI minus_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
     bool carry = false;
     int count = 0;
-    std::vector<int> num1;
-    std::vector<int> num2;
-    std::deque<int> result;
+    vector<int> num1;
+    vector<int> num2;
+    deque<int> result;
     while(b1 != e1){num1.push_back(*b1++);}
     while(b2 != e2){num2.push_back(*b2++);}
-    int top = std::max(num2.size(), num1.size());
-    if((int)num1.size() == top){
-        auto min = num2.rbegin();
-        for(int i = num1.size()-1; i >= 0; i--){
-            if(count++ >= (int)num2.size()){
-                if(carry){ 
-                    int val = 1;
-                    if(num1[i] >= val){
-                        result.push_front(num1[i] - val);
-                        carry = false;
-                    }else{
-                        result.push_front(10 - (val - num1[i]));
-                        carry = true;
-                    }
-                }else{ 
-                    result.push_front(num1[i]); 
-                }
-            }else{
-                int val = *min++;
-                if(carry){
-                    val += 1;
-                    if(num1[i] >= val){
-                        result.push_front(num1[i] - val);
-                        carry = false;
-                    }else{
-                        result.push_front(10 - (val - num1[i]));
-                        carry = true;
-                    }
+    assert(num1.size() >= num2.size());
+    auto min = num2.rbegin();
+    for(int i = num1.size()-1; i >= 0; i--){
+        if(count++ >= (int)num2.size()){
+            if(carry){ 
+                int val = 1;
+                if(num1[i] >= val){
+                    result.push_front(num1[i] - val);
+                    carry = false;
                 }else{
-                    if(num1[i] >= val){
-                        result.push_front(num1[i] - val);
-                        carry = false;
-                    }else{
-                        result.push_front(10 - (val - num1[i]));
-                        carry = true;
-                    }
+                    result.push_front(10 - (val - num1[i]));
+                    carry = true;
                 }
+            }else{ 
+                result.push_front(num1[i]); 
             }
-        }
-    }else{
-        auto min = num1.rbegin();
-        for(int i = num2.size()-1; i >= 0; i--){
-            if(count++ >= (int)num1.size()){
-                if(carry){ 
-                    int val = 1;
-                    if(num2[i] >= val){
-                        result.push_front(num2[i] - val);
-                        carry = false;
-                    }else{
-                        result.push_front(10 - (val - num2[i]));
-                        carry = true;
-                    }
-                }else{ result.push_front(num2[i]); }
-            }else{
-                int val = *min++;
-                if(carry){
-                    val += 1;
-                    if(num2[i] >= val){
-                        result.push_front(num2[i] - val);
-                        carry = false;
-                    }else{
-                        result.push_front(10 - (val - num2[i]));
-                        carry = true;
-                    }
+        }else{
+            int val = *min++;
+            if(carry){
+                val += 1;
+                if(num1[i] >= val){
+                    result.push_front(num1[i] - val);
+                    carry = false;
                 }else{
-                    if(num1[i] >= val){
-                        result.push_front(num2[i] - val);
-                        carry = false;
-                    }else{
-                        result.push_front(10 - (val - num2[i]));
-                        carry = true;
-                    }
+                    result.push_front(10 - (val - num1[i]));
+                    carry = true;
+                }
+            }else{
+                if(num1[i] >= val){
+                    result.push_front(num1[i] - val);
+                    carry = false;
+                }else{
+                    result.push_front(10 - (val - num1[i]));
+                    carry = true;
                 }
             }
         }
     }
 
+    auto begin = result.begin();
+    while(*begin == 0){*begin++;}
+    if(begin == result.end()){
+        *x++ = 0; 
+        return x;
+    }
 
     if(result[0] == 0){ for(int i = 1; i < (int)result.size(); i++){*x++ = result[i];} }
     else{ for(int i = 0; i < (int)result.size(); i++){*x++ = result[i];} }
-    for(auto c:result){cout<<c;}
-    cout << endl;
+    // for(auto c:result){cout<<c;}
+    // cout << endl;
     return x;}
 
 // -----------------
@@ -262,7 +230,22 @@ OI minus_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
  */
 template <typename II1, typename II2, typename OI>
 OI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
-    // <your code>
+    vector<int> num1;
+    vector<int> num2;
+    vector<int> result;
+    size_t b1_len = distance(b1, e1);
+    size_t b2_len = distance(b2, e2);
+    result.reserve(b1_len + b2_len);
+    while(b1 != e1){num1.push_back(*b1++);}
+    while(b2 != e2){num2.push_back(*b2++);}
+    copy(num1.begin(), num1.end(), result.begin());
+    const int b[] = {1};
+    while(num2[num2.size()-1] != 0){
+        plus_digits(num1.begin(), num2.end(), result.begin(), result.end(), result.begin());
+        minus_digits(num2.begin(), num2.end(), b, b + 1, num2.begin());
+    }
+    for(int i = 0; i < (int)result.size(); i++)
+        *x++ = result[i];
     return x;}
 
 // --------------
@@ -300,8 +283,15 @@ class Integer {
      * uses the default == to confirm equality
      */
     friend bool operator == (const Integer& lhs, const Integer& rhs) {
-        return lhs._x == rhs._x;}
-
+        auto lit = lhs._x.begin();
+        auto rit = rhs._x.begin();
+        while(lit != lhs._x.end() && rit != rhs._x.end()){
+            if(*lit++ != *rit++)
+                return false;
+        }
+        if(lit != lhs._x.end() || rit != rhs._x.end())
+            return false;
+        return true;}
     // -----------
     // operator !=
     // -----------
@@ -435,8 +425,11 @@ class Integer {
      * <your documentation>
      */
     friend std::ostream& operator << (std::ostream& lhs, const Integer& rhs) {
-        // <your code>
-        return lhs << "0";}
+        auto start = rhs._x.begin();
+        while(start != rhs._x.end()){
+            lhs << *start++;
+        }
+        return lhs;}
 
     // ---
     // abs
@@ -469,6 +462,7 @@ class Integer {
         C _x; // the backing container
         // <your data>
         bool positive;
+        int size;
 
     private:
         // -----
@@ -488,8 +482,16 @@ class Integer {
          * <your documentation>
          */
         Integer (int value) {
-            // <your code>
-            assert(valid());}
+            value < 0 ? positive = false : positive = true;
+            int val = value;
+            deque<int> myne;
+            while(val != 0){
+                myne.push_front(val % 10);
+                val /= 10;
+            }
+            _x.resize(myne.size());
+            copy(myne.begin(), myne.end(), _x.begin());
+        }
 
         /**
          * <your documentation>
@@ -642,7 +644,9 @@ class Integer {
          * <your documentation>
          */
         Integer& abs () {
-            // <your code>
+            if(this->positive){
+                this->positive = false;
+            }else{ this->positive = true;}
             return *this;}
 
         // ---

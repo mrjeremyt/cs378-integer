@@ -210,6 +210,24 @@ TEST(Integer, minus_digits_5) {
     ASSERT_EQ(1, p - x);
     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
 
+TEST(Integer, minus_digits_6) {
+    const int a[] = {1, 0, 0};
+    const int b[] = {1, 0, 0};
+    const int c[] = {0};
+          int x[10];
+    const int* p = minus_digits(a, a + 3, b, b + 3, x);
+    ASSERT_EQ(1, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+TEST(Integer, minus_digits_7) {
+    const int a[] = {4, 0, 0};
+    const int b[] = {1};
+    const int c[] = {3, 9, 9};
+          int x[10];
+    const int* p = minus_digits(a, a + 3, b, b + 1, x);
+    ASSERT_EQ(3, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
 
 // -----------------
 // multiplies_digits
@@ -320,19 +338,19 @@ TEST(Integer, abs_2) {
 
 TEST(Integer, abs_3) {
     try {
-        Integer<int>  x = 98765;
+        Integer<int>  x = 7;
         Integer<int>& y = x.abs();
-        ASSERT_EQ(98765, x);
+        ASSERT_EQ(-7, x);
         ASSERT_EQ(&x,    &y);}
     catch (std::invalid_argument& e) {
         ASSERT_TRUE(false);}}
 
 TEST(Integer, abs_4) {
     try {
-        const Integer<int> x = 98765;
+        const Integer<int> x = -666;
         const Integer<int> y = abs(x);
-        ASSERT_EQ(-98765, x);
-        ASSERT_EQ( 98765, y);}
+        ASSERT_EQ(-666, x);
+        ASSERT_EQ( 666, y);}
     catch (std::invalid_argument& e) {
         ASSERT_TRUE(false);}}
 
