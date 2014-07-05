@@ -154,7 +154,95 @@ OI plus_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
  */
 template <typename II1, typename II2, typename OI>
 OI minus_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
-    // <your code>
+    bool carry = false;
+    int count = 0;
+    std::vector<int> num1;
+    std::vector<int> num2;
+    std::deque<int> result;
+    while(b1 != e1){num1.push_back(*b1++);}
+    while(b2 != e2){num2.push_back(*b2++);}
+    int top = std::max(num2.size(), num1.size());
+    if((int)num1.size() == top){
+        auto min = num2.rbegin();
+        for(int i = num1.size()-1; i >= 0; i--){
+            if(count++ >= (int)num2.size()){
+                if(carry){ 
+                    int val = 1;
+                    if(num1[i] >= val){
+                        result.push_front(num1[i] - val);
+                        carry = false;
+                    }else{
+                        result.push_front(10 - (val - num1[i]));
+                        carry = true;
+                    }
+                }else{ 
+                    result.push_front(num1[i]); 
+                }
+            }else{
+                int val = *min++;
+                if(carry){
+                    val += 1;
+                    if(num1[i] >= val){
+                        result.push_front(num1[i] - val);
+                        carry = false;
+                    }else{
+                        result.push_front(10 - (val - num1[i]));
+                        carry = true;
+                    }
+                }else{
+                    if(num1[i] >= val){
+                        result.push_front(num1[i] - val);
+                        carry = false;
+                    }else{
+                        result.push_front(10 - (val - num1[i]));
+                        carry = true;
+                    }
+                }
+            }
+        }
+    }else{
+        auto min = num1.rbegin();
+        for(int i = num2.size()-1; i >= 0; i--){
+            if(count++ >= (int)num1.size()){
+                if(carry){ 
+                    int val = 1;
+                    if(num2[i] >= val){
+                        result.push_front(num2[i] - val);
+                        carry = false;
+                    }else{
+                        result.push_front(10 - (val - num2[i]));
+                        carry = true;
+                    }
+                }else{ result.push_front(num2[i]); }
+            }else{
+                int val = *min++;
+                if(carry){
+                    val += 1;
+                    if(num2[i] >= val){
+                        result.push_front(num2[i] - val);
+                        carry = false;
+                    }else{
+                        result.push_front(10 - (val - num2[i]));
+                        carry = true;
+                    }
+                }else{
+                    if(num1[i] >= val){
+                        result.push_front(num2[i] - val);
+                        carry = false;
+                    }else{
+                        result.push_front(10 - (val - num2[i]));
+                        carry = true;
+                    }
+                }
+            }
+        }
+    }
+
+
+    if(result[0] == 0){ for(int i = 1; i < (int)result.size(); i++){*x++ = result[i];} }
+    else{ for(int i = 0; i < (int)result.size(); i++){*x++ = result[i];} }
+    for(auto c:result){cout<<c;}
+    cout << endl;
     return x;}
 
 // -----------------
