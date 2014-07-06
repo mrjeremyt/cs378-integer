@@ -233,19 +233,35 @@ OI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
     vector<int> num1;
     vector<int> num2;
     vector<int> result;
-    size_t b1_len = distance(b1, e1);
-    size_t b2_len = distance(b2, e2);
+    size_t len1 = distance(b1, e1);
+    size_t len2 = distance(b2, e2);
     result.reserve(b1_len + b2_len);
     while(b1 != e1){num1.push_back(*b1++);}
     while(b2 != e2){num2.push_back(*b2++);}
-    copy(num1.begin(), num1.end(), result.begin());
-    const int b[] = {1};
-    while(num2[num2.size()-1] != 0){
-        plus_digits(num1.begin(), num2.end(), result.begin(), result.end(), result.begin());
-        minus_digits(num2.begin(), num2.end(), b, b + 1, num2.begin());
+
+    int k = 0; 
+    int count = 0;
+    int temp;
+    auto it1 = num1.rbegin();
+    auto it2 = num2.rbegin();
+
+    for(int i = 0; i < result.size(); i++){result[i] = 0;}
+
+    for(int i = 0; i < num1.size(); i++){
+        count = 0; k = i;
+        for(int j = 0; j <  num2.size(); j++){
+            temp = (*it1++) * (*it2++);
+            temp += count + result[k];
+            count = temp / 10;
+            result[k] = temp % 10;
+            k++
+        }
+        if(c!=0){ result[k] = c; k++; }
     }
-    for(int i = 0; i < (int)result.size(); i++)
-        *x++ = result[i];
+
+    auto it_Final = result.rbegin();
+    while(it_Final != result.rend();){ *x++ = *it_Final++; }
+
     return x;}
 
 // --------------
