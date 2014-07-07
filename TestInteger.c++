@@ -260,6 +260,25 @@ TEST(Integer, multiplies_digits_3) {
     ASSERT_EQ(2, p - x);
     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}    
 
+TEST(Integer, multiplies_digits_4) {
+    const int a[] = {9, 0, 0, 0, 0, 0, 0};
+    const int b[] = {1};
+    const int c[] = {9, 0, 0, 0, 0, 0, 0};
+          int x[10];
+    const int* p = multiplies_digits(a, a + 7, b, b + 1, x);
+    ASSERT_EQ(7, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}   
+
+
+TEST(Integer, multiplies_digits_5) {
+    const int a[] = {0};
+    const int b[] = {1};
+    const int c[] = {0};
+          int x[10];
+    const int* p = multiplies_digits(a, a + 1, b, b + 1, x);
+    ASSERT_EQ(1, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
 // --------------
 // divides_digits
 // --------------

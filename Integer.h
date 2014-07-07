@@ -233,34 +233,39 @@ OI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
     vector<int> num1;
     vector<int> num2;
     vector<int> result;
-    size_t len1 = distance(b1, e1);
-    size_t len2 = distance(b2, e2);
-    result.reserve(b1_len + b2_len);
     while(b1 != e1){num1.push_back(*b1++);}
     while(b2 != e2){num2.push_back(*b2++);}
+    result.resize(num1.size() + num2.size());
 
-    int k = 0; 
-    int count = 0;
-    int temp;
-    auto it1 = num1.rbegin();
-    auto it2 = num2.rbegin();
+    // int k = 0; 
+    // int count = 0;
+    //int temp;
 
-    for(int i = 0; i < result.size(); i++){result[i] = 0;}
+    
+    //for(int i = 0; i < (int)result.size(); i++){result[i] = 0;}
+    reverse(num1.begin(), num1.end());
+    reverse(num2.begin(), num2.end());
 
-    for(int i = 0; i < num1.size(); i++){
-        count = 0; k = i;
-        for(int j = 0; j <  num2.size(); j++){
-            temp = (*it1++) * (*it2++);
-            temp += count + result[k];
-            count = temp / 10;
-            result[k] = temp % 10;
-            k++
+    for(int i = 0; i < (int)num1.size(); i++){
+        int count = 0;
+        int k = i;
+        for(int j = 0; j < (int)num2.size(); j++){
+            int temp = (num1[i])*(num2[j]) + count + result[k];
+            count = temp/10;
+            result[k] = temp%10;
+            k++;
         }
-        if(c!=0){ result[k] = c; k++; }
+        if(count != 0){ result[k] = count; }
     }
 
-    auto it_Final = result.rbegin();
-    while(it_Final != result.rend();){ *x++ = *it_Final++; }
+    reverse(result.begin(), result.end());
+    auto it_Final = result.begin();
+    while(*it_Final == 0){it_Final++;}
+    if(it_Final == result.end()){
+        *x++ = 0;
+        return x;
+    }
+    while(it_Final != result.end()){ *x++ = *it_Final++; }
 
     return x;}
 
@@ -441,11 +446,11 @@ class Integer {
      * <your documentation>
      */
     friend std::ostream& operator << (std::ostream& lhs, const Integer& rhs) {
-        auto start = rhs._x.begin();
-        while(start != rhs._x.end()){
-            lhs << *start++;
-        }
-        return lhs;}
+        // auto start = rhs._x.begin();
+        // while(start != rhs._x.end()){
+        //     lhs << *start++;
+        // }
+        return lhs << "0";}
 
     // ---
     // abs
