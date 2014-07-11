@@ -17,6 +17,7 @@
 #include <string>    // string
 #include <vector>    // vector
 #include <deque>     // deque
+#include <algorithm> //for reasons
 #include <math.h>
 
 using namespace std;
@@ -55,6 +56,8 @@ OI shift_left_digits (II b, II e, int n, OI x) {
  */
 template <typename II, typename OI>
 OI shift_right_digits (II b, II e, int n, OI x) {
+    int d = distance(b, e);
+    if(d <= n){*x++ = 0; return x;}
     while(n-- > 0){ --e; }
     while(b != e){ *x++ = *b++; }
     return x;}
@@ -230,43 +233,26 @@ OI minus_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
  */
 template <typename II1, typename II2, typename OI>
 OI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
-    vector<int> num1;
-    vector<int> num2;
-    vector<int> result;
+    vector<int> num1; vector<int> num2; vector<int> result;
     while(b1 != e1){num1.push_back(*b1++);}
     while(b2 != e2){num2.push_back(*b2++);}
     result.resize(num1.size() + num2.size());
 
-    // int k = 0; 
-    // int count = 0;
-    //int temp;
-
-    
-    //for(int i = 0; i < (int)result.size(); i++){result[i] = 0;}
     reverse(num1.begin(), num1.end());
     reverse(num2.begin(), num2.end());
 
     for(int i = 0; i < (int)num1.size(); i++){
-        int count = 0;
-        int k = i;
+        int crry = 0; int k = i;
         for(int j = 0; j < (int)num2.size(); j++){
-            int temp = (num1[i])*(num2[j]) + count + result[k];
-            count = temp/10;
-            result[k] = temp%10;
-            k++;
-        }
-        if(count != 0){ result[k] = count; }
+            int temp = (num1[i])*(num2[j]) + crry + result[k];
+            crry = temp/10; result[k] = temp%10; k++;        }
+        if(crry != 0){ result[k] = crry; }
     }
 
-    reverse(result.begin(), result.end());
-    auto it_Final = result.begin();
-    while(*it_Final == 0){it_Final++;}
-    if(it_Final == result.end()){
-        *x++ = 0;
-        return x;
-    }
-    while(it_Final != result.end()){ *x++ = *it_Final++; }
-
+    auto it_Final = result.rbegin();
+    while(*it_Final == 0 && it_Final != result.rend()){it_Final++;}
+    if(it_Final == result.rend()){ *x++ = 0; return x;    }
+    while(it_Final != result.rend()){ *x++ = *it_Final++; }
     return x;}
 
 // --------------
@@ -284,10 +270,57 @@ OI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
  * output the division of the two input sequences into the output sequence
  * ([b1, e1) / [b2, e2)) => x
  */
-template <typename II1, typename II2, typename OI>
-OI divides_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
-    // <your code>
-    return x;}
+template <typename II1, typename II2, typename FI>
+FI divides_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) 
+{
+    vector<int> num1; vector<int> num2; vector<int> q;
+    while(b1 != e1){num1.push_back(*b1++);}
+    while(b2 != e2){num2.push_back(*b2++);}
+
+    q.resize(num1.size() + num2.size());
+    if (num1.size() < num2.size()){
+        vector<int> temp = num1;
+        num2 = temp;
+        num1 = num2;}
+    vector<int> dividend; dividend.push_back(1);
+    int count = 0;
+    while (num1.size() >= num2.size()){
+
+        bool minus = true;
+        if(num1.size() == num2.size()){
+            auto ita = num1.begin();
+            auto itb = num2.begin();
+            for (; ita != num1.end(); ita++){
+                if (*ita < *itb++){
+                    minus = false;
+                    break;
+                }
+            }
+        }
+        if (minus){
+            auto v = minus_digits(num1.begin(), num1.end(), dividend.begin(), dividend.end(), q.begin());
+            q.resize(distance(q.begin(), v));
+            num1= q;
+            count++;
+        }
+    }
+
+    vector<int>result;
+    while (count > 0)
+    {
+        result.push_back(count % 10); 
+        count /= 10;
+    }
+
+    auto it = result.rbegin();
+    while (*it == 0) it++;
+    if (it == result.rend() + 1){
+        *x++ = 0;
+        return x;
+    }
+    for (auto k: result) *x++ = k;
+    return x;
+}
 
 // -------
 // Integer
@@ -304,15 +337,20 @@ class Integer {
      * uses the default == to confirm equality
      */
     friend bool operator == (const Integer& lhs, const Integer& rhs) {
-        auto lit = lhs._x.begin();
-        auto rit = rhs._x.begin();
-        while(lit != lhs._x.end() && rit != rhs._x.end()){
-            if(*lit++ != *rit++)
-                return false;
-        }
-        if(lit != lhs._x.end() || rit != rhs._x.end())
+        if (lhs.positive != rhs.positive)
             return false;
-        return true;}
+        auto lhs_it = lhs._x.begin();
+        auto rhs_it = rhs._x.begin();
+        while (lhs_it != lhs._x.end() && rhs_it != rhs._x.end())
+        {
+            if (*lhs_it++ != *rhs_it++) return false;
+        }
+        if (lhs_it != lhs._x.end() || rhs_it != rhs._x.end()) return false;
+
+        return true;
+    }
+
+
     // -----------
     // operator !=
     // -----------
@@ -331,8 +369,27 @@ class Integer {
      * <your documentation>
      */
     friend bool operator < (const Integer& lhs, const Integer& rhs) {
-        // <your code>
-        return false;}
+        if(lhs._x.size() < rhs._x.size()){
+            if(lhs.positive && !rhs.positive) return false;
+            else return true;
+        }
+        else if(lhs._x.size() > rhs._x.size()){
+            if(!lhs.positive) return true;
+            else return false;
+        }
+        else if(!lhs.positive && rhs.positive) return true;
+        else if(lhs.positive && !rhs.positive) return false;
+        else{
+            auto it_l_s = lhs._x.begin();
+            auto it_l_e = lhs._x.end();
+            auto it_r_s = rhs._x.begin();
+
+            while (it_l_s != it_l_e){
+                if (*it_l_s++ < *it_r_s++) return true;
+            }
+        }
+        return false;
+    }
 
     // -----------
     // operator <=
@@ -446,11 +503,16 @@ class Integer {
      * <your documentation>
      */
     friend std::ostream& operator << (std::ostream& lhs, const Integer& rhs) {
-        // auto start = rhs._x.begin();
-        // while(start != rhs._x.end()){
-        //     lhs << *start++;
-        // }
-        return lhs << "0";}
+        if (rhs.positive == false){ 
+            if (!(rhs._x.size() == 1 && rhs._x.back() == 0)) lhs << "-";
+        }
+
+        auto it_s = rhs._x.begin();
+        auto it_e = rhs._x.end();
+
+        while (it_s != it_e) lhs << *it_s++;
+        return lhs;
+    }
 
     // ---
     // abs
@@ -483,7 +545,6 @@ class Integer {
         C _x; // the backing container
         // <your data>
         bool positive;
-        int size;
 
     private:
         // -----
@@ -492,6 +553,7 @@ class Integer {
 
         bool valid () const { // class invariant
             // <your code>
+            // I don't know what to do h
             return true;}
 
     public:
@@ -504,14 +566,23 @@ class Integer {
          */
         Integer (int value) {
             value < 0 ? positive = false : positive = true;
-            int val = value;
-            deque<int> myne;
-            while(val != 0){
-                myne.push_front(val % 10);
-                val /= 10;
-            }
-            _x.resize(myne.size());
-            copy(myne.begin(), myne.end(), _x.begin());
+
+            unsigned tmp;
+            if (value < 0) tmp = ~value + 1;
+            else  tmp = value;
+
+            deque<T> con;
+
+            if (tmp == 0)
+                con.push_front(0);
+            else {
+                while (tmp > 0)
+                {
+                    con.push_front(tmp % 10);
+                    tmp /= 10;}
+                }
+            _x.resize(con.size());
+            copy(con.begin(), con.end(), _x.begin());
         }
 
         /**
@@ -519,9 +590,25 @@ class Integer {
          * @throws invalid_argument if value is not a valid representation of an Integer
          */
         explicit Integer (const std::string& value) {
-            // <your code>
-            if (!valid())
-                throw std::invalid_argument("Integer::Integer()");}
+            char *c;
+            strtol(value.c_str(), &c, 10);
+
+            if (*c != 0) throw std::invalid_argument("Integer()");
+
+            positive = true;
+            auto val_f = value.begin();
+            auto val_b = value.end();
+
+            if (*val_f == 45) //Negative
+            {
+                positive = false;
+                val_f++;
+            }
+            while (val_f != val_b)
+            {
+                _x.push_back(*val_f++ - 48);
+            }
+        }
 
         // Default copy, destructor, and copy assignment.
         // Integer (const Integer&);
@@ -536,8 +623,12 @@ class Integer {
          * <your documentation>
          */
         Integer operator - () const {
-            // <your code>
-            return Integer(0);}
+            Integer tmp = *this;
+
+            if (!tmp.positive) tmp.positive = true;
+            else tmp.positive = false;
+            return tmp;
+        }
 
         // -----------
         // operator ++
@@ -585,8 +676,13 @@ class Integer {
          * <your documentation>
          */
         Integer& operator += (const Integer& rhs) {
-            // <your code>
-            return *this;}
+            Integer tmp = 0;
+            tmp._x.resize(this->_x.size() + rhs._x.size());
+            auto v = plus_digits(this->_x.begin(), this->_x.end(), rhs._x.begin(), rhs._x.end(), tmp._x.begin());
+            tmp._x.resize(distance(tmp._x.begin(), v));
+            *this = tmp;
+            return *this;
+        }
 
         // -----------
         // operator -=
@@ -596,8 +692,13 @@ class Integer {
          * <your documentation>
          */
         Integer& operator -= (const Integer& rhs) {
-            // <your code>
-            return *this;}
+            Integer tmp = 0;
+            tmp._x.resize(this->_x.size() + rhs._x.size());
+            auto v = minus_digits(this->_x.begin(), this->_x.end(), rhs._x.begin(), rhs._x.end(), tmp._x.begin());
+            tmp._x.resize(distance(tmp._x.begin(), v));
+            *this = tmp;
+            return *this;
+        }
 
         // -----------
         // operator *=
@@ -607,8 +708,18 @@ class Integer {
          * <your documentation>
          */
         Integer& operator *= (const Integer& rhs) {
-            // <your code>
-            return *this;}
+            Integer tmp = 0;
+            tmp._x.resize(this->_x.size() + rhs._x.size());
+            auto v = multiplies_digits(this->_x.begin(), this->_x.end(), rhs._x.begin(), rhs._x.end(), tmp._x.begin());
+            tmp._x.resize(distance(tmp._x.begin(), v));
+            bool check = true;
+            if(!this->positive && !tmp.positive) check = true;
+            else if(!this->positive && tmp.positive) check = false;
+            else if(this->positive && !tmp.positive) check = false;
+            *this = tmp;
+            if(!check) this->positive = false;
+            return *this;
+        }
 
         // -----------
         // operator /=
@@ -619,8 +730,14 @@ class Integer {
          * @throws invalid_argument if (rhs == 0)
          */
         Integer& operator /= (const Integer& rhs) {
-            // <your code>
-            return *this;}
+            if (rhs == 0) throw invalid_argument("Integer /=");
+
+            Integer tmp = 0;
+            tmp._x.resize(this->_x.size() + rhs._x.size());
+            divides_digits(this->_x.begin(), this->_x.end(), rhs._x.begin(), rhs._x.end(), tmp._x.begin());
+            *this = tmp;
+            return *this;
+        }
 
         // -----------
         // operator %=
@@ -631,8 +748,16 @@ class Integer {
          * @throws invalid_argument if (rhs <= 0)
          */
         Integer& operator %= (const Integer& rhs) {
-            // <your code>
-            return *this;}
+            Integer wtf = rhs;
+            Integer why = 0;
+            if (wtf._x <= why) throw invalid_argument("mod()");
+
+            Integer tmp = 0;
+            tmp._x.resize(this->_x.size() + wtf._x.size());
+            divides_digits(this->_x.begin(), this->_x.end(), wtf._x.begin(), wtf._x.end(), tmp._x.begin());
+            *this = tmp;
+            return *this;
+        }
 
         // ------------
         // operator <<=
@@ -642,8 +767,12 @@ class Integer {
          * <your documentation>
          */
         Integer& operator <<= (int n) {
-            // <your code>
-            return *this;}
+            Integer tmp = 0;
+            tmp._x.resize(this->_x.size() + n);
+            shift_left_digits(this->_x.begin(), this->_x.end(), n, tmp._x.begin());
+            *this = tmp;
+            return *this;
+        }
 
         // ------------
         // operator >>=
@@ -653,8 +782,11 @@ class Integer {
          * <your documentation>
          */
         Integer& operator >>= (int n) {
-            // <your code>
-            return *this;}
+            Integer tmp = 0;
+            shift_right_digits(this->_x.begin(), this->_x.end(), n, tmp._x.begin());
+            *this = tmp;
+            return *this;
+        }
 
         // ---
         // abs
@@ -680,9 +812,21 @@ class Integer {
          * @throws invalid_argument if ((this == 0) && (e == 0)) or (e < 0)
          */
         Integer& pow (int e) {
-            if(((this == 0) && (e == 0)) || (e < 0))
-                throw std::invalid_argument("Invalid Argument to the call.");
+            if (((this == 0) && (e == 0)) || (e < 0))
+                throw invalid_argument("Integer: power");
 
-            return *this;}};
+            Integer tmp = 1;
+            while (e > 0){
+                if (e % 2 == 1){
+                    tmp *= *this;
+                    e -= 1; 
+                }else{
+                *this *= *this;
+                e /= 2;}
+            }
+            *this = tmp;
+            return *this;
+        }
+};
 
 #endif // Integer_h

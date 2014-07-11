@@ -46,7 +46,7 @@ int main () {
 
     // less than 300 ms without valgrind
     // less than  15  s with    valgrind
-    cout << "*** 20th Mersenne prime: 1,332 digits ***" << endl << endl;
+    // cout << "*** 20th Mersenne prime: 1,332 digits ***" << endl << endl;
 
     {
     const Integer<int> n = Integer<int>(2).pow(4423) - 1;
