@@ -69,7 +69,12 @@ int main () {
     {
     const Integer<int> n = Integer<int>(2).pow(132049) - 1;
     cout << "2^132049 - 1 = " << n << endl << endl;
-    }
+   }
+
+   // {
+   // const Integer<int> n = Integer<int>(2).pow(1398269) - 1;
+   // cout << "2^1398269 - i = " << n << endl << endl; 
+   // }
 
     cout << "Done." << endl;
 

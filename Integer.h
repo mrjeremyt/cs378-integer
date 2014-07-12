@@ -270,35 +270,45 @@ OI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
  * output the division of the two input sequences into the output sequence
  * ([b1, e1) / [b2, e2)) => x
  */
-template <typename II1, typename II2, typename FI>
-FI divides_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x) 
+template <typename II1, typename II2, typename OI>
+OI divides_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) 
 {
     vector<int> num1; vector<int> num2; vector<int> q;
     while(b1 != e1){num1.push_back(*b1++);}
     while(b2 != e2){num2.push_back(*b2++);}
-
     q.resize(num1.size() + num2.size());
     if (num1.size() < num2.size()){
         vector<int> temp = num1;
+        num1 = num2;
         num2 = temp;
-        num1 = num2;}
+    }
+
+    if(num1.size() == 1 && num1.front() == 0){*x++ = 0; return x;}
+    else if(num2.size() == 1 && num2.front() == 0){throw std::invalid_argument("Divide by 0");}
+
     vector<int> dividend; dividend.push_back(1);
     int count = 0;
+    bool minus = true;
     while (num1.size() >= num2.size()){
 
-        bool minus = true;
         if(num1.size() == num2.size()){
             auto ita = num1.begin();
             auto itb = num2.begin();
-            for (; ita != num1.end(); ita++){
-                if (*ita < *itb++){
-                    minus = false;
-                    break;
+            if(*ita > *itb){ minus = true; }
+            else{
+                for(;ita != num1.end(); ita++, itb++){
+                    if (*ita >= *itb){
+                        minus = true;
+                    }else{
+                        minus = false;
+                        break;
+                    }
                 }
             }
         }
-        if (minus){
-            auto v = minus_digits(num1.begin(), num1.end(), dividend.begin(), dividend.end(), q.begin());
+        if(!minus){ break;}
+        else{
+            auto v = minus_digits(num1.begin(), num1.end(), num2.begin(), num2.end(), q.begin());
             q.resize(distance(q.begin(), v));
             num1= q;
             count++;
@@ -306,19 +316,19 @@ FI divides_digits (II1 b1, II1 e1, II2 b2, II2 e2, FI x)
     }
 
     vector<int>result;
-    while (count > 0)
-    {
+    while (count > 0){
         result.push_back(count % 10); 
         count /= 10;
     }
 
-    auto it = result.rbegin();
+    auto it = result.begin();
     while (*it == 0) it++;
-    if (it == result.rend() + 1){
+    if (it == result.end() + 1){
         *x++ = 0;
         return x;
     }
-    for (auto k: result) *x++ = k;
+    auto back = result.rbegin();
+    while(back != result.rend()) *x++ = *back++;
     return x;
 }
 
@@ -504,7 +514,7 @@ class Integer {
      */
     friend std::ostream& operator << (std::ostream& lhs, const Integer& rhs) {
         if (rhs.positive == false){ 
-            if (!(rhs._x.size() == 1 && rhs._x.back() == 0)) lhs << "-";
+            if (!(rhs._x.size() == 1 && rhs._x.front() == 0)) lhs << "-";
         }
 
         auto it_s = rhs._x.begin();
@@ -576,11 +586,11 @@ class Integer {
             if (tmp == 0)
                 con.push_front(0);
             else {
-                while (tmp > 0)
-                {
+                while (tmp > 0){
                     con.push_front(tmp % 10);
-                    tmp /= 10;}
+                    tmp /= 10;
                 }
+            }
             _x.resize(con.size());
             copy(con.begin(), con.end(), _x.begin());
         }
@@ -676,12 +686,38 @@ class Integer {
          * <your documentation>
          */
         Integer& operator += (const Integer& rhs) {
-            Integer tmp = 0;
-            tmp._x.resize(this->_x.size() + rhs._x.size());
-            auto v = plus_digits(this->_x.begin(), this->_x.end(), rhs._x.begin(), rhs._x.end(), tmp._x.begin());
-            tmp._x.resize(distance(tmp._x.begin(), v));
-            *this = tmp;
-            return *this;
+            Integer why = rhs;
+            if(!this->positive && why.positive){
+                this->positive = true;
+                if(*this < why){
+                    *this = why - *this;
+                    return *this;
+                }else{
+                    *this -= why;
+                    this->positive = false;
+                    return *this;
+                }
+            }else if(this->positive && !why.positive){
+                why.positive = true;
+                if(*this < why){
+                    *this = why - *this;
+                    this->positive = false;
+                    return *this;
+                }else{
+                    *this -= why;
+                    return *this;
+                }
+            }else{
+                auto is_neg = false;
+                if(!this->positive && !why.positive){this->positive = true; why.positive = true; is_neg = true;}
+                Integer tmp = 0;
+                tmp._x.resize(this->_x.size() + why._x.size());
+                auto v = plus_digits(this->_x.begin(), this->_x.end(), why._x.begin(), why._x.end(), tmp._x.begin());
+                tmp._x.resize(distance(tmp._x.begin(), v));
+                *this = tmp;
+                if(is_neg){this->positive = false;}
+                return *this;
+            }
         }
 
         // -----------
@@ -692,12 +728,27 @@ class Integer {
          * <your documentation>
          */
         Integer& operator -= (const Integer& rhs) {
-            Integer tmp = 0;
-            tmp._x.resize(this->_x.size() + rhs._x.size());
-            auto v = minus_digits(this->_x.begin(), this->_x.end(), rhs._x.begin(), rhs._x.end(), tmp._x.begin());
-            tmp._x.resize(distance(tmp._x.begin(), v));
-            *this = tmp;
-            return *this;
+            Integer why = rhs;
+            if(!this->positive && why.positive){
+                this->positive = true;
+                *this += why;
+                this->positive = false;
+                return *this;
+            }else if(this->positive && !why.positive){
+                *this += why;
+                return *this;
+            }else{
+
+                auto b = false;
+                if(!this->positive && !why.positive){ this->positive = true; why.positive = true; b = true; }
+                Integer tmp = 0;
+                tmp._x.resize(this->_x.size() + why._x.size());
+                auto v = minus_digits(this->_x.begin(), this->_x.end(), why._x.begin(), why._x.end(), tmp._x.begin());
+                tmp._x.resize(distance(tmp._x.begin(), v));
+                *this = tmp;
+                if(b){this->positive = false;}
+                return *this;
+            }
         }
 
         // -----------
@@ -708,14 +759,14 @@ class Integer {
          * <your documentation>
          */
         Integer& operator *= (const Integer& rhs) {
+            bool check = true;
+            if(!this->positive && !rhs.positive) check = true;
+            else if(!this->positive && rhs.positive) check = false;
+            else if(this->positive && !rhs.positive) check = false;
             Integer tmp = 0;
             tmp._x.resize(this->_x.size() + rhs._x.size());
             auto v = multiplies_digits(this->_x.begin(), this->_x.end(), rhs._x.begin(), rhs._x.end(), tmp._x.begin());
             tmp._x.resize(distance(tmp._x.begin(), v));
-            bool check = true;
-            if(!this->positive && !tmp.positive) check = true;
-            else if(!this->positive && tmp.positive) check = false;
-            else if(this->positive && !tmp.positive) check = false;
             *this = tmp;
             if(!check) this->positive = false;
             return *this;
@@ -748,14 +799,18 @@ class Integer {
          * @throws invalid_argument if (rhs <= 0)
          */
         Integer& operator %= (const Integer& rhs) {
-            Integer wtf = rhs;
-            Integer why = 0;
-            if (wtf._x <= why) throw invalid_argument("mod()");
-
-            Integer tmp = 0;
-            tmp._x.resize(this->_x.size() + wtf._x.size());
-            divides_digits(this->_x.begin(), this->_x.end(), wtf._x.begin(), wtf._x.end(), tmp._x.begin());
-            *this = tmp;
+            auto b = true;
+            if(!this->positive){b = false;}
+            Integer why = rhs;
+            Integer thing = *this;
+            thing = thing / why;
+            thing = thing * why;
+            Integer maybe = 0;
+            maybe._x.resize(this->_x.size() + why._x.size());
+            auto v = minus_digits(this->_x.begin(), this->_x.end(), thing._x.begin(), thing._x.end(), maybe._x.begin());
+            maybe._x.resize(distance(maybe._x.begin(), v));
+            if(!b){this->positive = false;}
+            *this = maybe;
             return *this;
         }
 
@@ -768,6 +823,7 @@ class Integer {
          */
         Integer& operator <<= (int n) {
             Integer tmp = 0;
+            tmp.positive = this->positive;
             tmp._x.resize(this->_x.size() + n);
             shift_left_digits(this->_x.begin(), this->_x.end(), n, tmp._x.begin());
             *this = tmp;
@@ -783,6 +839,7 @@ class Integer {
          */
         Integer& operator >>= (int n) {
             Integer tmp = 0;
+            tmp.positive = this->positive;
             shift_right_digits(this->_x.begin(), this->_x.end(), n, tmp._x.begin());
             *this = tmp;
             return *this;
