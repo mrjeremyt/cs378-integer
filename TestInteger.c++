@@ -283,32 +283,7 @@ TEST(Integer, multiplies_digits_5) {
 // divides_digits
 // --------------
 
-// TEST(Integer, divides_digits_1) {
-//     const int a[] = {1, 0};
-//     const int b[] = {1, 0};
-//     const int c[] = {1};
-//           int x[10];
-//     const int* p = divides_digits(a, a + 2, b, b + 2, x);
-//     ASSERT_EQ(1, p - x);
-//     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
 
-// TEST(Integer, divides_digits_2) {
-//     const int a[] = {1, 4, 4};
-//     const int b[] = {1, 2};
-//     const int c[] = {1, 2};
-//           int x[10];
-//     const int* p = divides_digits(a, a + 3, b, b + 2, x);
-//     ASSERT_EQ(2, p - x);
-//     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
-
-// TEST(Integer, divides_digits_3) {
-//     const int a[] = {1, 3, 2, 6, 7, 8};
-//     const int b[] = {5, 6, 7};
-//     const int c[] = {2, 3, 4};
-//           int x[10];
-//     const int* p = divides_digits(a, a + 6, b, b + 3, x);
-//     ASSERT_EQ(3, p - x);
-//     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
 
 TEST(Integer, divides_digits_1) {
     const int a[] = {1, 3, 2, 6, 7, 8};
@@ -542,15 +517,6 @@ TEST(Integer, output_3) {
 // pow
 // ---
 
-// TEST(Integer, pow_1) {
-//     try {
-//         Integer<int>       x = 98765;
-//         const int          e =  9867;
-//         Integer<int>&      y = x.pow(e);
-//         ASSERT_EQ(9867,  e);
-//         ASSERT_EQ(  &x, &y);}
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);}}
 
 TEST(Integer, pow_3) {
     try {
@@ -586,20 +552,6 @@ TEST(Integer, pow_5){
     }catch(std::invalid_argument& e){
         ASSERT_TRUE(false);}
 }
-// ---
-// operator >>=
-// ---
-
-// TEST(Integer, operator_left_shift) {
-//     try {
-//         Integer<int> x = 98765;
-//         Integer<int> y = 9876;
-//         ASSERT_EQ(98765,  x);
-//         x >>= 1;
-//         ASSERT_EQ(x, y);
-//     }
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);}}
 
 
 
@@ -806,181 +758,6 @@ TEST(Integer, operator_multiply_equal_3) {
 
 
 
-// // ---
-// // operator /=
-// // ---
-
-// TEST(Integer, operator_divides_equal_1) {
-//     try {
-//         Integer<int> x = 2;
-//         Integer<int> y = 3;
-//         ASSERT_EQ(2,  x);
-//         ASSERT_EQ(3,  y);
-//         x /= y;
-//         ASSERT_EQ(0,  x);
-//     }
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);
-//     }
-// }
-
-// TEST(Integer, operator_divides_equal_2) {
-//     try {
-//         Integer<int> x = -25;
-//         Integer<int> y = 5;
-//         ASSERT_EQ(-25,  x);
-//         ASSERT_EQ(5,    y);
-//         x /= y;
-//         ASSERT_EQ(-5, x);
-//     }
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);
-//     }
-// }
-
-// TEST(Integer, operator_divides_equal_3) {
-//     try {
-//         Integer<int> x = 25;
-//         Integer<int> y = -5;
-//         ASSERT_EQ(25,  x);
-//         ASSERT_EQ(-5,    y);
-//         x /= y;
-//         ASSERT_EQ(-5, x);
-//     }
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);
-//     }
-// }
-
-// TEST(Integer, operator_divides_equal_4) {
-//     try {
-//         Integer<int> x = 0;
-//         Integer<int> y = 5;
-//         ASSERT_EQ(0,  x);
-//         ASSERT_EQ(5,    y);
-//         x /= y;
-//         ASSERT_EQ(0, x);
-//     }
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);
-//     }
-// }
-
-// TEST(Integer, operator_divides_equal_5) {
-//     try {
-//         Integer<int> x = -25;
-//         Integer<int> y = -5;
-//         ASSERT_EQ(-25,  x);
-//         ASSERT_EQ(-5,    y);
-//         x /= y;
-//         ASSERT_EQ(5, x);
-//     }
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);
-//     }
-// }
-
-// TEST(Integer, operator_divides_equal_6) {
-//     try {
-//         Integer<int> x = 11;
-//         Integer<int> y = 6;
-//         ASSERT_EQ(11,  x);
-//         ASSERT_EQ(6,    y);
-//         x /= y;
-//         ASSERT_EQ(1, x);
-//     }
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);
-//     }
-// }
-
-// TEST(Integer, operator_divides_equal_7) {
-//     try {
-//         Integer<int> x = 11;
-//         Integer<int> y = 5;
-//         ASSERT_EQ(11,  x);
-//         ASSERT_EQ(5,    y);
-//         x /= y;
-//         ASSERT_EQ(2, x);
-//     }
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);
-//     }
-// }
-
-// // ---
-// // operator /=
-// // ---
-
-// TEST(Integer, operator_modulus_equal_1) {
-//     try {
-//         Integer<int> x = 2;
-//         Integer<int> y = 3;
-//         ASSERT_EQ(2,  x);
-//         ASSERT_EQ(3,  y);
-//         x %= y;
-//         ASSERT_EQ(2,  x);
-//     }
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);
-//     }
-// }
-
-// TEST(Integer, operator_modulus_equal_2) {
-//     try {
-//         Integer<int> x = 25;
-//         Integer<int> y = 5;
-//         ASSERT_EQ(25,  x);
-//         ASSERT_EQ(5,    y);
-//         x %= y;
-//         ASSERT_EQ(0, x);
-//     }
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);
-//     }
-// }
-
-// TEST(Integer, operator_modulus_equal_3) {
-//     try {
-//         Integer<int> x = 400;
-//         Integer<int> y = 250;
-//         ASSERT_EQ(400,  x);
-//         ASSERT_EQ(250,    y);
-//         x %= y;
-//         ASSERT_EQ(150, x);
-//     }
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);
-//     }
-// }
-
-// TEST(Integer, operator_modulus_equal_4) {
-//     try {
-//         Integer<int> x = 3;
-//         Integer<int> y = 5;
-//         ASSERT_EQ(3,  x);
-//         ASSERT_EQ(5,    y);
-//         x %= y;
-//         ASSERT_EQ(3, x);
-//     }
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);
-//     }
-// }
-
-// TEST(Integer, operator_modulus_equal_5) {
-//     try {
-//         Integer<int> x = -3;
-//         Integer<int> y = 5;
-//         ASSERT_EQ(-3,  x);
-//         ASSERT_EQ(5,    y);
-//         x %= y;
-//         ASSERT_EQ(-3, x);
-//     }
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);
-//     }
-// }
 
 // // ---
 // // operator ==
@@ -1331,51 +1108,7 @@ TEST(Integer, operator_multiply_3) {
     }
 }
 
-// // ---
-// // operator /
-// // ---
 
-// TEST(Integer, operator_divides_1) {
-//     try {
-//         Integer<int> x = 2;
-//         Integer<int> y = 3;
-//         Integer<int> z = x / y;
-//         ASSERT_EQ(2,  x);
-//         ASSERT_EQ(3,  y);
-//         ASSERT_EQ(z, 0);
-//     }
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);
-//     }
-// }
-
-// TEST(Integer, operator_divides_2) {
-//     try {
-//         Integer<int> x = 2;
-//         Integer<int> y = -3;
-//         Integer<int> z = x / y;
-//         ASSERT_EQ(2,  x);
-//         ASSERT_EQ(-3,  y);
-//         ASSERT_EQ(z, 0);
-//     }
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);
-//     }
-// }
-
-// TEST(Integer, operator_divides_3) {
-//     try {
-//         Integer<int> x = -26;
-//         Integer<int> y = -13;
-//         Integer<int> z = x / y;
-//         ASSERT_EQ(-26,  x);
-//         ASSERT_EQ(-13,  y);
-//         ASSERT_EQ(z, 2);
-//     }
-//     catch (std::invalid_argument& e) {
-//         ASSERT_TRUE(false);
-//     }
-// }
 
 // // ---
 // // operator %
