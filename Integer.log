@@ -1,0 +1,95 @@
+commit 9d90af4566ed43b3fbd734c5cb8372f7a844526c
+Author: mrjeremyt <jthompson2214@gmail.com>
+Date:   Fri Jul 11 21:32:12 2014 -0500
+
+    cleaned up the TestInteger.c++ file
+
+commit 9f8bb67f6399e4dfbfb8b7115f2700a1fad80d28
+Author: mrjeremyt <jthompson2214@gmail.com>
+Date:   Fri Jul 11 21:29:29 2014 -0500
+
+    FINISHED! closes #5 closes #6 closes #7 closes #8 closes #9 closes #10 closes #11 closes #12 closes #13 closes #14 closes #15 closes #16 closes #17 closes #18 closes #19 closes #20.
+
+commit 73f25a1bf1c1ca8b7096bd4a06943576f950dc19
+Author: mrjeremyt <jthompson2214@gmail.com>
+Date:   Fri Jul 11 00:25:03 2014 -0500
+
+    finalizing my debigging. going to turn in 1 day late.
+
+commit 7f4c829011d05660179a95323cbf0c0994388b2c
+Author: mrjeremyt <jthompson2214@gmail.com>
+Date:   Mon Jul 7 00:26:49 2014 -0500
+
+    multiply is working now
+
+commit b6e556c63e3f28f28ad69d03d982b66ef440fe7d
+Author: mrjeremyt <jthompson2214@gmail.com>
+Date:   Sat Jul 5 22:28:36 2014 -0700
+
+    maybe the multiply works?
+
+commit 9eef1475bf8f7a3cc709043b8cd4299857b077a0
+Author: mrjeremyt <jthompson2214@gmail.com>
+Date:   Sat Jul 5 00:42:55 2014 -0500
+
+    got some things working more. Massive errors with multiplication. need to resolve.
+
+commit dccb2db9abd6408117146482f7bbe2d51da48f6c
+Author: mrjeremyt <jthompson2214@gmail.com>
+Date:   Fri Jul 4 20:12:24 2014 -0500
+
+    minus digits is working
+
+commit ba2dd8d137621a37e81debb124f9a7dcd19bc1e6
+Author: mrjeremyt <jthompson2214@gmail.com>
+Date:   Fri Jul 4 18:16:33 2014 -0500
+
+    plus digits now works
+
+commit 99fefe766aa515965c205604c447b27a78749255
+Author: mrjeremyt <jthompson2214@gmail.com>
+Date:   Fri Jul 4 14:03:52 2014 -0500
+
+    working on plus_digits.
+
+commit 2701451e1ecdf4c128583788db0ec595d6a249e9
+Author: mrjeremyt <jthompson2214@gmail.com>
+Date:   Thu Jul 3 13:31:33 2014 -0500
+
+    got shift right digits working.
+
+commit 32798095d9f576a61df62f7510b3c6ffadf664b5
+Author: mrjeremyt <jthompson2214@gmail.com>
+Date:   Wed Jul 2 18:02:33 2014 -0500
+
+    got shift_left_digits to pass
+
+commit e1680e6eae19d2e9d3208b3f90d866b366384515
+Author: mrjeremyt <jthompson2214@gmail.com>
+Date:   Tue Jul 1 10:37:56 2014 -0500
+
+    updated and correct makefile
+
+commit da55850474c5a41d3e682339b6da052b49f75c43
+Author: mrjeremyt <jthompson2214@gmail.com>
+Date:   Mon Jun 30 17:41:48 2014 -0500
+
+    All tests up to 3. Just need to confirm that tests are needed for ALL the operators.
+
+commit ae273c0e0cb2c2700145b02de3637430bfa46121
+Author: mrjeremyt <jthompson2214@gmail.com>
+Date:   Mon Jun 30 16:39:30 2014 -0500
+
+    Got 6 more tests to pass by implimenting the == operator. Next is elaborating on tests.
+
+commit c5987ec7f0c054fa6bfacb5c57ed63da9f9eef66
+Author: mrjeremyt <jthompson2214@gmail.com>
+Date:   Mon Jun 30 14:56:44 2014 -0500
+
+    first commit. added files from class repo. added grader as colab. closes #1 closes #2 closes #3 closes #4.
+
+commit 740b2884ba50bc4157360e325a927b033c2a5983
+Author: Jeremy Thompson <jthompson2214@gmail.com>
+Date:   Mon Jun 30 12:33:03 2014 -0500
+
+    Initial commit

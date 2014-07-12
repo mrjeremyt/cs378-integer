@@ -1,0 +1,2167 @@
+        -:    0:Source:Integer.h
+        -:    0:Graph:TestInteger.gcno
+        -:    0:Data:TestInteger.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:// --------------------------
+        -:    2:// projects/integer/Integer.h
+        -:    3:// Copyright (C) 2014
+        -:    4:// Glenn P. Downing
+        -:    5:// --------------------------
+        -:    6:
+        -:    7:#ifndef Integer_h
+        -:    8:#define Integer_h
+        -:    9:
+        -:   10:// --------
+        -:   11:// includes
+        -:   12:// --------
+        -:   13:
+        -:   14:#include <cassert>   // assert
+        -:   15:#include <iostream>  // ostream
+        -:   16:#include <stdexcept> // invalid_argument
+        -:   17:#include <string>    // string
+        -:   18:#include <vector>    // vector
+        -:   19:#include <deque>     // deque
+        -:   20:#include <algorithm> //for reasons
+        -:   21:#include <math.h>
+        -:   22:
+        -:   23:using namespace std;
+        -:   24:
+        -:   25:// -----------------
+        -:   26:// shift_left_digits
+        -:   27:// -----------------
+        -:   28:
+        -:   29:/**
+        -:   30: * @param b an iterator to the beginning of an input  sequence (inclusive)
+        -:   31: * @param e an iterator to the end       of an input  sequence (exclusive)
+        -:   32: * @param x an iterator to the beginning of an output sequence (inclusive)
+        -:   33: * @return  an iterator to the end       of an output sequence (exclusive)
+        -:   34: * the sequences are of decimal digits
+        -:   35: * output the shift left of the input sequence into the output sequence
+        -:   36: * ([b, e) << n) => x
+        -:   37: */
+        -:   38:template <typename II, typename OI>
+function _Z17shift_left_digitsIN9__gnu_cxx17__normal_iteratorIPiSt6vectorIiSaIiEEEES6_ET0_T_S8_iS7_ called 2 returned 100% blocks executed 100%
+function _Z17shift_left_digitsIPKiPiET0_T_S4_iS3_ called 3 returned 100% blocks executed 100%
+        5:   39:OI shift_left_digits (II b, II e, int n, OI x) {
+        5:   40:    while(b != e){*x++ = *b++;}
+call    0 returned 100%
+call    1 returned 100%
+call    2 returned 100%
+call    3 returned 100%
+call    4 returned 100%
+branch  5 taken 50%
+branch  6 taken 50% (fallthrough)
+branch  7 taken 77%
+branch  8 taken 23% (fallthrough)
+        5:   41:    while(n-- > 0){*x++ = 0;}
+call    0 returned 100%
+call    1 returned 100%
+branch  2 taken 75%
+branch  3 taken 25% (fallthrough)
+branch  4 taken 70%
+branch  5 taken 30% (fallthrough)
+        5:   42:    return x;}
+        -:   43:
+        -:   44:// ------------------
+        -:   45:// shift_right_digits
+        -:   46:// ------------------
+        -:   47:
+        -:   48:/**
+        -:   49: * @param b an iterator to the beginning of an input  sequence (inclusive)
+        -:   50: * @param e an iterator to the end       of an input  sequence (exclusive)
+        -:   51: * @param x an iterator to the beginning of an output sequence (inclusive)
+        -:   52: * @return  an iterator to the end       of an output sequence (exclusive)
+        -:   53: * the sequences are of decimal digits
+        -:   54: * output the shift right of the input sequence into the output sequence
+        -:   55: * ([b, e) >> n) => x
+        -:   56: */
+        -:   57:template <typename II, typename OI>
+function _Z18shift_right_digitsIN9__gnu_cxx17__normal_iteratorIPiSt6vectorIiSaIiEEEES6_ET0_T_S8_iS7_ called 3 returned 100% blocks executed 100%
+function _Z18shift_right_digitsIPKiPiET0_T_S4_iS3_ called 3 returned 100% blocks executed 91%
+        6:   58:OI shift_right_digits (II b, II e, int n, OI x) {
+        6:   59:    int d = distance(b, e);
+call    0 returned 100%
+call    1 returned 100%
+        6:   60:    if(d <= n){*x++ = 0; return x;}
+branch  0 taken 67% (fallthrough)
+branch  1 taken 33%
+call    2 returned 100%
+call    3 returned 100%
+branch  4 taken 0% (fallthrough)
+branch  5 taken 100%
+        4:   61:    while(n-- > 0){ --e; }
+call    0 returned 100%
+branch  1 taken 86%
+branch  2 taken 14% (fallthrough)
+branch  3 taken 73%
+branch  4 taken 27% (fallthrough)
+        4:   62:    while(b != e){ *x++ = *b++; }
+call    0 returned 100%
+call    1 returned 100%
+call    2 returned 100%
+call    3 returned 100%
+call    4 returned 100%
+branch  5 taken 50%
+branch  6 taken 50% (fallthrough)
+branch  7 taken 67%
+branch  8 taken 33% (fallthrough)
+        4:   63:    return x;}
+        -:   64:
+        -:   65:// -----------
+        -:   66:// plus_digits
+        -:   67:// -----------
+        -:   68:
+        -:   69:/**
+        -:   70: * @param b  an iterator to the beginning of an input  sequence (inclusive)
+        -:   71: * @param e  an iterator to the end       of an input  sequence (exclusive)
+        -:   72: * @param b2 an iterator to the beginning of an input  sequence (inclusive)
+        -:   73: * @param e2 an iterator to the end       of an input  sequence (exclusive)
+        -:   74: * @param x  an iterator to the beginning of an output sequence (inclusive)
+        -:   75: * @return   an iterator to the end       of an output sequence (exclusive)
+        -:   76: * the sequences are of decimal digits
+        -:   77: * output the sum of the two input sequences into the output sequence
+        -:   78: * ([b1, e1) + [b2, e2)) => x
+        -:   79: */
+        -:   80:template <typename II1, typename II2, typename OI>
+function _Z11plus_digitsIN9__gnu_cxx17__normal_iteratorIPiSt6vectorIiSaIiEEEES6_S6_ET1_T_S8_T0_S9_S7_ called 13 returned 100% blocks executed 55%
+function _Z11plus_digitsIPKiS1_PiET1_T_S4_T0_S5_S3_ called 5 returned 100% blocks executed 80%
+       18:   81:OI plus_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
+       18:   82:    bool overflow = false;
+       18:   83:    int count = 0;
+       18:   84:    vector<int> num1;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+branch  3 taken 100% (fallthrough)
+branch  4 taken 0% (throw)
+call    5 returned 100%
+       18:   85:    vector<int> num2;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+branch  3 taken 100% (fallthrough)
+branch  4 taken 0% (throw)
+call    5 returned 100%
+       18:   86:    deque<int> result;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+branch  3 taken 100% (fallthrough)
+branch  4 taken 0% (throw)
+call    5 returned 100%
+       18:   87:    while(b1 != e1){num1.push_back(*b1++);}
+call    0 returned 100%
+call    1 returned 100%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0% (throw)
+call    4 returned 100%
+branch  5 taken 100% (fallthrough)
+branch  6 taken 0% (throw)
+call    7 returned 100%
+branch  8 taken 55%
+branch  9 taken 45% (fallthrough)
+branch 10 taken 100% (fallthrough)
+branch 11 taken 0% (throw)
+call   12 returned 100%
+branch 13 taken 67%
+branch 14 taken 33% (fallthrough)
+       18:   88:    while(b2 != e2){num2.push_back(*b2++);}
+call    0 returned 100%
+call    1 returned 100%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0% (throw)
+call    4 returned 100%
+branch  5 taken 100% (fallthrough)
+branch  6 taken 0% (throw)
+call    7 returned 100%
+branch  8 taken 50%
+branch  9 taken 50% (fallthrough)
+branch 10 taken 100% (fallthrough)
+branch 11 taken 0% (throw)
+call   12 returned 100%
+branch 13 taken 67%
+branch 14 taken 33% (fallthrough)
+       18:   89:    int top = std::max(num2.size(), num1.size());
+call    0 returned 100%
+call    1 returned 100%
+call    2 returned 100%
+call    3 returned 100%
+call    4 returned 100%
+call    5 returned 100%
+       18:   90:    if((int)num1.size() == top){
+call    0 returned 100%
+branch  1 taken 100% (fallthrough)
+branch  2 taken 0%
+call    3 returned 100%
+branch  4 taken 60% (fallthrough)
+branch  5 taken 40%
+       16:   91:        auto min = num2.rbegin();
+call    0 returned 100%
+call    1 returned 100%
+       39:   92:        for(int i = num1.size()-1; i >= 0; i--){
+call    0 returned 100%
+branch  1 taken 55%
+branch  2 taken 45% (fallthrough)
+call    3 returned 100%
+branch  4 taken 70%
+branch  5 taken 30% (fallthrough)
+       23:   93:            if(count++ >= (int)num2.size()){
+call    0 returned 100%
+branch  1 taken 19% (fallthrough)
+branch  2 taken 81%
+call    3 returned 100%
+branch  4 taken 29% (fallthrough)
+branch  5 taken 71%
+        5:   94:                int add = num1[i];
+call    0 returned 100%
+call    1 returned 100%
+        5:   95:                if(overflow){
+branch  0 taken 33% (fallthrough)
+branch  1 taken 67%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0%
+        3:   96:                    overflow = false;
+        3:   97:                    add += 1;}
+        5:   98:                if(add > 9){
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0%
+        2:   99:                    overflow = true;
+        2:  100:                    result.push_front(add % 10);
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+branch  3 taken 100% (fallthrough)
+branch  4 taken 0% (throw)
+call    5 returned 100%
+        3:  101:                }else{result.push_front(add);  }
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+branch  3 never executed
+branch  4 never executed
+call    5 never executed
+        -:  102:            }else{
+       18:  103:                int to_insert = (num1[i] + *min++);
+call    0 returned 100%
+branch  1 taken 100% (fallthrough)
+branch  2 taken 0% (throw)
+call    3 returned 100%
+branch  4 taken 100% (fallthrough)
+branch  5 taken 0% (throw)
+call    6 returned 100%
+call    7 returned 100%
+branch  8 taken 100% (fallthrough)
+branch  9 taken 0% (throw)
+call   10 returned 100%
+branch 11 taken 100% (fallthrough)
+branch 12 taken 0% (throw)
+call   13 returned 100%
+       18:  104:                if(overflow){
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+branch  2 taken 40% (fallthrough)
+branch  3 taken 60%
+        2:  105:                    overflow = false;
+        2:  106:                    to_insert += 1;}
+       18:  107:                if(to_insert > 9){
+branch  0 taken 15% (fallthrough)
+branch  1 taken 85%
+branch  2 taken 60% (fallthrough)
+branch  3 taken 40%
+        5:  108:                    overflow = true;
+        5:  109:                    to_insert = to_insert % 10;
+        5:  110:                    result.push_front(to_insert);
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+branch  3 taken 100% (fallthrough)
+branch  4 taken 0% (throw)
+call    5 returned 100%
+       13:  111:                }else{ result.push_front(to_insert); }
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+branch  3 taken 100% (fallthrough)
+branch  4 taken 0% (throw)
+call    5 returned 100%
+        -:  112:            }
+        -:  113:        }
+        -:  114:    }else{
+        2:  115:        auto min = num1.rbegin();
+call    0 never executed
+call    1 returned 100%
+        7:  116:        for(int i = num2.size()-1; i >= 0; i--){
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 returned 100%
+branch  4 taken 71%
+branch  5 taken 29% (fallthrough)
+        5:  117:            if(count++ >= (int)num1.size()){
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 returned 100%
+branch  4 taken 40% (fallthrough)
+branch  5 taken 60%
+        2:  118:                int add = num2[i];
+call    0 never executed
+call    1 returned 100%
+        2:  119:                if(overflow){
+branch  0 never executed
+branch  1 never executed
+branch  2 taken 50% (fallthrough)
+branch  3 taken 50%
+        1:  120:                    overflow = false;
+        1:  121:                    add += 1;}
+        2:  122:                if(add > 9){
+branch  0 never executed
+branch  1 never executed
+branch  2 taken 50% (fallthrough)
+branch  3 taken 50%
+        1:  123:                    overflow = true;
+        1:  124:                    result.push_front(add % 10);
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+branch  3 taken 100% (fallthrough)
+branch  4 taken 0% (throw)
+call    5 returned 100%
+        1:  125:                }else{result.push_front(add);  }
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+branch  3 taken 100% (fallthrough)
+branch  4 taken 0% (throw)
+call    5 returned 100%
+        -:  126:            }else{
+        3:  127:                int to_insert = (num2[i] + *min++);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+call    6 never executed
+call    7 returned 100%
+branch  8 taken 100% (fallthrough)
+branch  9 taken 0% (throw)
+call   10 returned 100%
+branch 11 taken 100% (fallthrough)
+branch 12 taken 0% (throw)
+call   13 returned 100%
+        3:  128:                if(overflow){
+branch  0 never executed
+branch  1 never executed
+branch  2 taken 33% (fallthrough)
+branch  3 taken 67%
+        1:  129:                    overflow = false;
+        1:  130:                    to_insert += 1;}
+        3:  131:                if(to_insert > 9){
+branch  0 never executed
+branch  1 never executed
+branch  2 taken 67% (fallthrough)
+branch  3 taken 33%
+        2:  132:                    overflow = true;
+        2:  133:                    to_insert = to_insert % 10;
+        2:  134:                    result.push_front(to_insert);
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+branch  3 taken 100% (fallthrough)
+branch  4 taken 0% (throw)
+call    5 returned 100%
+        1:  135:                }else{ result.push_front(to_insert); }
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+branch  3 taken 100% (fallthrough)
+branch  4 taken 0% (throw)
+call    5 returned 100%
+        -:  136:            }
+        -:  137:        }
+        -:  138:    }
+       18:  139:    if(overflow){result.push_front(1);}
+branch  0 taken 8% (fallthrough)
+branch  1 taken 92%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0% (throw)
+call    4 returned 100%
+branch  5 taken 40% (fallthrough)
+branch  6 taken 60%
+branch  7 taken 100% (fallthrough)
+branch  8 taken 0% (throw)
+call    9 returned 100%
+       18:  140:    for(int i = 0; i < (int)result.size(); i++){*x++ = result[i];}
+call    0 returned 100%
+call    1 returned 100%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0% (throw)
+call    4 returned 100%
+call    5 returned 100%
+branch  6 taken 57%
+branch  7 taken 43% (fallthrough)
+branch  8 taken 100% (fallthrough)
+branch  9 taken 0% (throw)
+call   10 returned 100%
+call   11 returned 100%
+branch 12 taken 74%
+branch 13 taken 26% (fallthrough)
+       18:  141:    return x;}
+call    0 returned 100%
+call    1 returned 100%
+call    2 returned 100%
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 returned 100%
+call    8 returned 100%
+call    9 returned 100%
+call   10 never executed
+call   11 never executed
+call   12 never executed
+call   13 never executed
+        -:  142:
+        -:  143:// ------------
+        -:  144:// minus_digits
+        -:  145:// ------------
+        -:  146:
+        -:  147:/**
+        -:  148: * @param b  an iterator to the beginning of an input  sequence (inclusive)
+        -:  149: * @param e  an iterator to the end       of an input  sequence (exclusive)
+        -:  150: * @param b2 an iterator to the beginning of an input  sequence (inclusive)
+        -:  151: * @param e2 an iterator to the end       of an input  sequence (exclusive)
+        -:  152: * @param x  an iterator to the beginning of an output sequence (inclusive)
+        -:  153: * @return   an iterator to the end       of an output sequence (exclusive)
+        -:  154: * the sequences are of decimal digits
+        -:  155: * output the difference of the two input sequences into the output sequence
+        -:  156: * ([b1, e1) - [b2, e2)) => x
+        -:  157: */
+        -:  158:template <typename II1, typename II2, typename OI>
+function _Z12minus_digitsIN9__gnu_cxx17__normal_iteratorIPiSt6vectorIiSaIiEEEES6_S6_ET1_T_S8_T0_S9_S7_ called 7 returned 100% blocks executed 70%
+function _Z12minus_digitsIPKiS1_PiET1_T_S4_T0_S5_S3_ called 5 returned 100% blocks executed 81%
+       12:  159:OI minus_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
+       12:  160:    bool carry = false;
+       12:  161:    int count = 0;
+       12:  162:    vector<int> num1;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+branch  3 taken 100% (fallthrough)
+branch  4 taken 0% (throw)
+call    5 returned 100%
+       12:  163:    vector<int> num2;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+branch  3 taken 100% (fallthrough)
+branch  4 taken 0% (throw)
+call    5 returned 100%
+       12:  164:    deque<int> result;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+branch  3 taken 100% (fallthrough)
+branch  4 taken 0% (throw)
+call    5 returned 100%
+       12:  165:    while(b1 != e1){num1.push_back(*b1++);}
+call    0 returned 100%
+call    1 returned 100%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0% (throw)
+call    4 returned 100%
+branch  5 taken 100% (fallthrough)
+branch  6 taken 0% (throw)
+call    7 returned 100%
+branch  8 taken 61%
+branch  9 taken 39% (fallthrough)
+branch 10 taken 100% (fallthrough)
+branch 11 taken 0% (throw)
+call   12 returned 100%
+branch 13 taken 74%
+branch 14 taken 26% (fallthrough)
+       12:  166:    while(b2 != e2){num2.push_back(*b2++);}
+call    0 returned 100%
+call    1 returned 100%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0% (throw)
+call    4 returned 100%
+branch  5 taken 100% (fallthrough)
+branch  6 taken 0% (throw)
+call    7 returned 100%
+branch  8 taken 50%
+branch  9 taken 50% (fallthrough)
+branch 10 taken 100% (fallthrough)
+branch 11 taken 0% (throw)
+call   12 returned 100%
+branch 13 taken 64%
+branch 14 taken 36% (fallthrough)
+       12:  167:    assert(num1.size() >= num2.size());
+call    0 returned 100%
+call    1 returned 100%
+branch  2 taken 0% (fallthrough)
+branch  3 taken 100%
+call    4 never executed
+call    5 returned 100%
+call    6 returned 100%
+branch  7 taken 0% (fallthrough)
+branch  8 taken 100%
+call    9 never executed
+       12:  168:    auto min = num2.rbegin();
+call    0 returned 100%
+call    1 returned 100%
+       37:  169:    for(int i = num1.size()-1; i >= 0; i--){
+call    0 returned 100%
+branch  1 taken 61%
+branch  2 taken 39% (fallthrough)
+call    3 returned 100%
+branch  4 taken 74%
+branch  5 taken 26% (fallthrough)
+       25:  170:        if(count++ >= (int)num2.size()){
+call    0 returned 100%
+branch  1 taken 36% (fallthrough)
+branch  2 taken 64%
+call    3 returned 100%
+branch  4 taken 36% (fallthrough)
+branch  5 taken 64%
+        9:  171:            if(carry){ 
+branch  0 taken 75% (fallthrough)
+branch  1 taken 25%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0%
+        8:  172:                int val = 1;
+        8:  173:                if(num1[i] >= val){
+call    0 returned 100%
+branch  1 taken 100% (fallthrough)
+branch  2 taken 0%
+call    3 returned 100%
+branch  4 taken 40% (fallthrough)
+branch  5 taken 60%
+        5:  174:                    result.push_front(num1[i] - val);
+call    0 returned 100%
+branch  1 taken 100% (fallthrough)
+branch  2 taken 0% (throw)
+call    3 returned 100%
+call    4 returned 100%
+branch  5 taken 100% (fallthrough)
+branch  6 taken 0% (throw)
+call    7 returned 100%
+        5:  175:                    carry = false;
+        -:  176:                }else{
+        3:  177:                    result.push_front(10 - (val - num1[i]));
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+call    4 returned 100%
+branch  5 taken 100% (fallthrough)
+branch  6 taken 0% (throw)
+call    7 returned 100%
+        3:  178:                    carry = true;
+        -:  179:                }
+        -:  180:            }else{ 
+        1:  181:                result.push_front(num1[i]); 
+call    0 returned 100%
+branch  1 taken 100% (fallthrough)
+branch  2 taken 0% (throw)
+call    3 returned 100%
+call    4 never executed
+branch  5 never executed
+branch  6 never executed
+call    7 never executed
+        -:  182:            }
+        -:  183:        }else{
+       16:  184:            int val = *min++;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+branch  3 taken 100% (fallthrough)
+branch  4 taken 0% (throw)
+call    5 returned 100%
+branch  6 taken 100% (fallthrough)
+branch  7 taken 0% (throw)
+call    8 returned 100%
+branch  9 taken 100% (fallthrough)
+branch 10 taken 0% (throw)
+call   11 returned 100%
+       16:  185:            if(carry){
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+branch  2 taken 33% (fallthrough)
+branch  3 taken 67%
+        3:  186:                val += 1;
+        3:  187:                if(num1[i] >= val){
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 returned 100%
+branch  4 taken 67% (fallthrough)
+branch  5 taken 33%
+        2:  188:                    result.push_front(num1[i] - val);
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+call    4 returned 100%
+branch  5 taken 100% (fallthrough)
+branch  6 taken 0% (throw)
+call    7 returned 100%
+        2:  189:                    carry = false;
+        -:  190:                }else{
+        1:  191:                    result.push_front(10 - (val - num1[i]));
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+call    3 never executed
+call    4 returned 100%
+branch  5 taken 100% (fallthrough)
+branch  6 taken 0% (throw)
+call    7 returned 100%
+        1:  192:                    carry = true;
+        -:  193:                }
+        -:  194:            }else{
+       13:  195:                if(num1[i] >= val){
+call    0 returned 100%
+branch  1 taken 57% (fallthrough)
+branch  2 taken 43%
+call    3 returned 100%
+branch  4 taken 33% (fallthrough)
+branch  5 taken 67%
+        6:  196:                    result.push_front(num1[i] - val);
+call    0 returned 100%
+branch  1 taken 100% (fallthrough)
+branch  2 taken 0% (throw)
+call    3 returned 100%
+call    4 returned 100%
+branch  5 taken 100% (fallthrough)
+branch  6 taken 0% (throw)
+call    7 returned 100%
+        6:  197:                    carry = false;
+        -:  198:                }else{
+        7:  199:                    result.push_front(10 - (val - num1[i]));
+call    0 returned 100%
+branch  1 taken 100% (fallthrough)
+branch  2 taken 0% (throw)
+call    3 returned 100%
+call    4 returned 100%
+branch  5 taken 100% (fallthrough)
+branch  6 taken 0% (throw)
+call    7 returned 100%
+        7:  200:                    carry = true;
+        -:  201:                }
+        -:  202:            }
+        -:  203:        }
+        -:  204:    }
+        -:  205:
+       12:  206:    auto begin = result.begin();
+call    0 returned 100%
+call    1 returned 100%
+       12:  207:    while(*begin == 0){*begin++;}
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+call    3 returned 100%
+call    4 returned 100%
+branch  5 taken 30%
+branch  6 taken 70% (fallthrough)
+branch  7 taken 100% (fallthrough)
+branch  8 taken 0% (throw)
+call    9 returned 100%
+call   10 returned 100%
+call   11 returned 100%
+branch 12 taken 29%
+branch 13 taken 71% (fallthrough)
+       12:  208:    if(begin == result.end()){
+call    0 returned 100%
+call    1 returned 100%
+branch  2 taken 0% (fallthrough)
+branch  3 taken 100%
+call    4 returned 100%
+call    5 returned 100%
+branch  6 taken 0% (fallthrough)
+branch  7 taken 100%
+    #####:  209:        *x++ = 0; 
+call    0 never executed
+call    1 never executed
+    #####:  210:        return x;
+        -:  211:    }
+        -:  212:
+       12:  213:    if(result[0] == 0){ for(int i = 1; i < (int)result.size(); i++){*x++ = result[i];} }
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+branch  3 taken 43% (fallthrough)
+branch  4 taken 57%
+call    5 returned 100%
+call    6 returned 100%
+branch  7 taken 100% (fallthrough)
+branch  8 taken 0% (throw)
+call    9 returned 100%
+call   10 returned 100%
+branch 11 taken 50%
+branch 12 taken 50%
+branch 13 taken 100% (fallthrough)
+branch 14 taken 0% (throw)
+call   15 returned 100%
+branch 16 taken 40% (fallthrough)
+branch 17 taken 60%
+branch 18 taken 100% (fallthrough)
+branch 19 taken 0% (throw)
+call   20 returned 100%
+call   21 returned 100%
+branch 22 taken 71%
+branch 23 taken 29%
+        7:  214:    else{ for(int i = 0; i < (int)result.size(); i++){*x++ = result[i];} }
+call    0 returned 100%
+call    1 returned 100%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0% (throw)
+call    4 returned 100%
+call    5 returned 100%
+branch  6 taken 56%
+branch  7 taken 44% (fallthrough)
+branch  8 taken 100% (fallthrough)
+branch  9 taken 0% (throw)
+call   10 returned 100%
+call   11 returned 100%
+branch 12 taken 70%
+branch 13 taken 30% (fallthrough)
+        -:  215:    // for(auto c:result){cout<<c;}
+        -:  216:    // cout << endl;
+       12:  217:    return x;}
+call    0 returned 100%
+call    1 returned 100%
+call    2 returned 100%
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 returned 100%
+call    8 returned 100%
+call    9 returned 100%
+call   10 never executed
+call   11 never executed
+call   12 never executed
+call   13 never executed
+        -:  218:
+        -:  219:// -----------------
+        -:  220:// multiplies_digits
+        -:  221:// -----------------
+        -:  222:
+        -:  223:/**
+        -:  224: * @param b  an iterator to the beginning of an input  sequence (inclusive)
+        -:  225: * @param e  an iterator to the end       of an input  sequence (exclusive)
+        -:  226: * @param b2 an iterator to the beginning of an input  sequence (inclusive)
+        -:  227: * @param e2 an iterator to the end       of an input  sequence (exclusive)
+        -:  228: * @param x  an iterator to the beginning of an output sequence (inclusive)
+        -:  229: * @return   an iterator to the end       of an output sequence (exclusive)
+        -:  230: * the sequences are of decimal digits
+        -:  231: * output the product of the two input sequences into the output sequence
+        -:  232: * ([b1, e1) * [b2, e2)) => x
+        -:  233: */
+        -:  234:template <typename II1, typename II2, typename OI>
+function _Z17multiplies_digitsIN9__gnu_cxx17__normal_iteratorIPiSt6vectorIiSaIiEEEENS1_IPKiS5_EES6_ET1_T_SB_T0_SC_SA_ called 11 returned 100% blocks executed 79%
+function _Z17multiplies_digitsIPKiS1_PiET1_T_S4_T0_S5_S3_ called 4 returned 100% blocks executed 82%
+       15:  235:OI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
+       15:  236:    vector<int> num1; vector<int> num2; vector<int> result;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+branch  3 taken 100% (fallthrough)
+branch  4 taken 0% (throw)
+call    5 returned 100%
+branch  6 taken 100% (fallthrough)
+branch  7 taken 0% (throw)
+call    8 returned 100%
+branch  9 taken 100% (fallthrough)
+branch 10 taken 0% (throw)
+call   11 returned 100%
+branch 12 taken 100% (fallthrough)
+branch 13 taken 0% (throw)
+call   14 returned 100%
+branch 15 taken 100% (fallthrough)
+branch 16 taken 0% (throw)
+call   17 returned 100%
+       15:  237:    while(b1 != e1){num1.push_back(*b1++);}
+call    0 returned 100%
+call    1 returned 100%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0% (throw)
+call    4 returned 100%
+branch  5 taken 100% (fallthrough)
+branch  6 taken 0% (throw)
+call    7 returned 100%
+branch  8 taken 62%
+branch  9 taken 38% (fallthrough)
+branch 10 taken 100% (fallthrough)
+branch 11 taken 0% (throw)
+call   12 returned 100%
+branch 13 taken 75%
+branch 14 taken 25% (fallthrough)
+       15:  238:    while(b2 != e2){num2.push_back(*b2++);}
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+call    3 returned 100%
+branch  4 taken 100% (fallthrough)
+branch  5 taken 0% (throw)
+call    6 returned 100%
+branch  7 taken 100% (fallthrough)
+branch  8 taken 0% (throw)
+call    9 returned 100%
+branch 10 taken 72%
+branch 11 taken 28% (fallthrough)
+branch 12 taken 100% (fallthrough)
+branch 13 taken 0% (throw)
+call   14 returned 100%
+branch 15 taken 60%
+branch 16 taken 40% (fallthrough)
+       15:  239:    result.resize(num1.size() + num2.size());
+call    0 returned 100%
+call    1 returned 100%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0% (throw)
+call    4 returned 100%
+call    5 returned 100%
+call    6 returned 100%
+branch  7 taken 100% (fallthrough)
+branch  8 taken 0% (throw)
+call    9 returned 100%
+        -:  240:
+       15:  241:    reverse(num1.begin(), num1.end());
+call    0 returned 100%
+call    1 returned 100%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0% (throw)
+call    4 returned 100%
+call    5 returned 100%
+call    6 returned 100%
+branch  7 taken 100% (fallthrough)
+branch  8 taken 0% (throw)
+call    9 returned 100%
+       15:  242:    reverse(num2.begin(), num2.end());
+call    0 returned 100%
+call    1 returned 100%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0% (throw)
+call    4 returned 100%
+call    5 returned 100%
+call    6 returned 100%
+branch  7 taken 100% (fallthrough)
+branch  8 taken 0% (throw)
+call    9 returned 100%
+        -:  243:
+       45:  244:    for(int i = 0; i < (int)num1.size(); i++){
+call    0 returned 100%
+branch  1 taken 62%
+branch  2 taken 38% (fallthrough)
+call    3 returned 100%
+branch  4 taken 75%
+branch  5 taken 25% (fallthrough)
+       30:  245:        int crry = 0; int k = i;
+      110:  246:        for(int j = 0; j < (int)num2.size(); j++){
+call    0 returned 100%
+branch  1 taken 78%
+branch  2 taken 23% (fallthrough)
+call    3 returned 100%
+branch  4 taken 60%
+branch  5 taken 40% (fallthrough)
+       80:  247:            int temp = (num1[i])*(num2[j]) + crry + result[k];
+call    0 returned 100%
+call    1 returned 100%
+call    2 returned 100%
+call    3 returned 100%
+call    4 returned 100%
+call    5 returned 100%
+       80:  248:            crry = temp/10; result[k] = temp%10; k++;        }
+call    0 returned 100%
+call    1 returned 100%
+       30:  249:        if(crry != 0){ result[k] = crry; }
+branch  0 taken 17% (fallthrough)
+branch  1 taken 83%
+call    2 returned 100%
+branch  3 taken 33% (fallthrough)
+branch  4 taken 67%
+call    5 returned 100%
+        -:  250:    }
+        -:  251:
+       15:  252:    auto it_Final = result.rbegin();
+call    0 returned 100%
+call    1 returned 100%
+       15:  253:    while(*it_Final == 0 && it_Final != result.rend()){it_Final++;}
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+branch  3 taken 100% (fallthrough)
+branch  4 taken 0% (throw)
+call    5 returned 100%
+branch  6 taken 45% (fallthrough)
+branch  7 taken 55%
+call    8 returned 100%
+branch  9 taken 100% (fallthrough)
+branch 10 taken 0% (throw)
+call   11 returned 100%
+branch 12 taken 100% (fallthrough)
+branch 13 taken 0%
+branch 14 taken 45% (fallthrough)
+branch 15 taken 55%
+branch 16 taken 45%
+branch 17 taken 55% (fallthrough)
+branch 18 never executed
+branch 19 never executed
+branch 20 taken 100% (fallthrough)
+branch 21 taken 0% (throw)
+call   22 returned 100%
+branch 23 taken 100% (fallthrough)
+branch 24 taken 0% (throw)
+call   25 returned 100%
+branch 26 taken 33% (fallthrough)
+branch 27 taken 67%
+call   28 returned 100%
+branch 29 taken 100% (fallthrough)
+branch 30 taken 0% (throw)
+call   31 returned 100%
+branch 32 taken 100% (fallthrough)
+branch 33 taken 0%
+branch 34 taken 33% (fallthrough)
+branch 35 taken 67%
+branch 36 taken 33%
+branch 37 taken 67% (fallthrough)
+branch 38 never executed
+branch 39 never executed
+       15:  254:    if(it_Final == result.rend()){ *x++ = 0; return x;    }
+call    0 returned 100%
+branch  1 taken 100% (fallthrough)
+branch  2 taken 0% (throw)
+call    3 returned 100%
+branch  4 taken 0% (fallthrough)
+branch  5 taken 100%
+call    6 never executed
+call    7 never executed
+call    8 returned 100%
+branch  9 taken 100% (fallthrough)
+branch 10 taken 0% (throw)
+call   11 returned 100%
+branch 12 taken 0% (fallthrough)
+branch 13 taken 100%
+       15:  255:    while(it_Final != result.rend()){ *x++ = *it_Final++; }
+call    0 returned 100%
+call    1 returned 100%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0% (throw)
+call    4 returned 100%
+branch  5 taken 100% (fallthrough)
+branch  6 taken 0% (throw)
+call    7 returned 100%
+call    8 returned 100%
+branch  9 taken 100% (fallthrough)
+branch 10 taken 0% (throw)
+call   11 returned 100%
+branch 12 taken 77%
+branch 13 taken 23% (fallthrough)
+branch 14 taken 100% (fallthrough)
+branch 15 taken 0% (throw)
+call   16 returned 100%
+branch 17 taken 100% (fallthrough)
+branch 18 taken 0% (throw)
+call   19 returned 100%
+call   20 returned 100%
+branch 21 taken 100% (fallthrough)
+branch 22 taken 0% (throw)
+call   23 returned 100%
+branch 24 taken 80%
+branch 25 taken 20% (fallthrough)
+       15:  256:    return x;}
+call    0 returned 100%
+call    1 returned 100%
+call    2 returned 100%
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+call    7 returned 100%
+call    8 returned 100%
+call    9 returned 100%
+call   10 never executed
+call   11 never executed
+call   12 never executed
+call   13 never executed
+        -:  257:
+        -:  258:// --------------
+        -:  259:// divides_digits
+        -:  260:// --------------
+        -:  261:
+        -:  262:/**
+        -:  263: * @param b  an iterator to the beginning of an input  sequence (inclusive)
+        -:  264: * @param e  an iterator to the end       of an input  sequence (exclusive)
+        -:  265: * @param b2 an iterator to the beginning of an input  sequence (inclusive)
+        -:  266: * @param e2 an iterator to the end       of an input  sequence (exclusive)
+        -:  267: * @param x  an iterator to the beginning of an output sequence (inclusive)
+        -:  268: * @return   an iterator to the end       of an output sequence (exclusive)
+        -:  269: * the sequences are of decimal digits
+        -:  270: * output the division of the two input sequences into the output sequence
+        -:  271: * ([b1, e1) / [b2, e2)) => x
+        -:  272: */
+        -:  273:template <typename II1, typename II2, typename OI>
+        -:  274:OI divides_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) 
+        -:  275:{
+        -:  276:    vector<int> num1; vector<int> num2; vector<int> q;
+        -:  277:    while(b1 != e1){num1.push_back(*b1++);}
+        -:  278:    while(b2 != e2){num2.push_back(*b2++);}
+        -:  279:    q.resize(num1.size() + num2.size());
+        -:  280:    if (num1.size() < num2.size()){
+        -:  281:        vector<int> temp = num1;
+        -:  282:        num1 = num2;
+        -:  283:        num2 = temp;
+        -:  284:    }
+        -:  285:
+        -:  286:    if(num1.size() == 1 && num1.front() == 0){*x++ = 0; return x;}
+        -:  287:    else if(num2.size() == 1 && num2.front() == 0){throw std::invalid_argument("Divide by 0");}
+        -:  288:
+        -:  289:    vector<int> dividend; dividend.push_back(1);
+        -:  290:    int count = 0;
+        -:  291:    bool minus = true;
+        -:  292:    while (num1.size() >= num2.size()){
+        -:  293:
+        -:  294:        if(num1.size() == num2.size()){
+        -:  295:            auto ita = num1.begin();
+        -:  296:            auto itb = num2.begin();
+        -:  297:            if(*ita > *itb){ minus = true; }
+        -:  298:            else{
+        -:  299:                for(;ita != num1.end(); ita++, itb++){
+        -:  300:                    if (*ita >= *itb){
+        -:  301:                        minus = true;
+        -:  302:                    }else{
+        -:  303:                        minus = false;
+        -:  304:                        break;
+        -:  305:                    }
+        -:  306:                }
+        -:  307:            }
+        -:  308:        }
+        -:  309:        if(!minus){ break;}
+        -:  310:        else{
+        -:  311:            auto v = minus_digits(num1.begin(), num1.end(), num2.begin(), num2.end(), q.begin());
+        -:  312:            q.resize(distance(q.begin(), v));
+        -:  313:            num1= q;
+        -:  314:            count++;
+        -:  315:        }
+        -:  316:    }
+        -:  317:
+        -:  318:    vector<int>result;
+        -:  319:    while (count > 0){
+        -:  320:        result.push_back(count % 10); 
+        -:  321:        count /= 10;
+        -:  322:    }
+        -:  323:
+        -:  324:    auto it = result.begin();
+        -:  325:    while (*it == 0) it++;
+        -:  326:    if (it == result.end() + 1){
+        -:  327:        *x++ = 0;
+        -:  328:        return x;
+        -:  329:    }
+        -:  330:    auto back = result.rbegin();
+        -:  331:    while(back != result.rend()) *x++ = *back++;
+        -:  332:    return x;
+        -:  333:}
+        -:  334:
+        -:  335:// -------
+        -:  336:// Integer
+        -:  337:// -------
+        -:  338:
+        -:  339:template < typename T, typename C = std::vector<T> >
+function _ZN7IntegerIiSt6vectorIiSaIiEEEaSEOS3_ called 2 returned 100% blocks executed 100%
+function _ZN7IntegerIiSt6vectorIiSaIiEEEaSERKS3_ called 39 returned 100% blocks executed 100%
+function _ZN7IntegerIiSt6vectorIiSaIiEEEC2ERKS3_ called 77 returned 100% blocks executed 100%
+function _ZN7IntegerIiSt6vectorIiSaIiEEED2Ev called 379 returned 100% blocks executed 100%
+      497:  340:class Integer {
+call    0 returned 100%
+call    1 returned 100%
+call    2 returned 100%
+call    3 returned 100%
+        -:  341:    // -----------
+        -:  342:    // operator ==
+        -:  343:    // -----------
+        -:  344:
+        -:  345:    /**
+        -:  346:     * <your documentation>
+        -:  347:     * uses the default == to confirm equality
+        -:  348:     */
+function _ZeqRK7IntegerIiSt6vectorIiSaIiEEES5_ called 153 returned 100% blocks executed 69%
+      153:  349:    friend bool operator == (const Integer& lhs, const Integer& rhs) {
+      153:  350:        if (lhs.positive != rhs.positive)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  351:            return false;
+      153:  352:        auto lhs_it = lhs._x.begin();
+call    0 returned 100%
+      153:  353:        auto rhs_it = rhs._x.begin();
+call    0 returned 100%
+      153:  354:        while (lhs_it != lhs._x.end() && rhs_it != rhs._x.end())
+call    0 returned 100%
+branch  1 taken 100% (fallthrough)
+branch  2 taken 0% (throw)
+call    3 returned 100%
+branch  4 taken 67% (fallthrough)
+branch  5 taken 33%
+call    6 returned 100%
+branch  7 taken 100% (fallthrough)
+branch  8 taken 0% (throw)
+call    9 returned 100%
+branch 10 taken 100% (fallthrough)
+branch 11 taken 0%
+branch 12 taken 67% (fallthrough)
+branch 13 taken 33%
+branch 14 taken 100% (fallthrough)
+branch 15 taken 0%
+branch 16 taken 67%
+branch 17 taken 33% (fallthrough)
+branch 18 never executed
+branch 19 never executed
+branch 20 never executed
+branch 21 never executed
+        -:  355:        {
+      296:  356:            if (*lhs_it++ != *rhs_it++) return false;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+call    3 returned 100%
+branch  4 taken 100% (fallthrough)
+branch  5 taken 0% (throw)
+call    6 returned 100%
+call    7 returned 100%
+branch  8 taken 1% (fallthrough)
+branch  9 taken 99%
+        -:  357:        }
+      149:  358:        if (lhs_it != lhs._x.end() || rhs_it != rhs._x.end()) return false;
+call    0 returned 100%
+branch  1 taken 100% (fallthrough)
+branch  2 taken 0% (throw)
+call    3 returned 100%
+branch  4 taken 100% (fallthrough)
+branch  5 taken 0%
+call    6 returned 100%
+branch  7 taken 100% (fallthrough)
+branch  8 taken 0% (throw)
+call    9 returned 100%
+branch 10 taken 0% (fallthrough)
+branch 11 taken 100%
+branch 12 taken 100% (fallthrough)
+branch 13 taken 0%
+branch 14 taken 100% (fallthrough)
+branch 15 taken 0%
+branch 16 taken 0% (fallthrough)
+branch 17 taken 100%
+branch 18 never executed
+branch 19 never executed
+branch 20 never executed
+branch 21 never executed
+call   22 never executed
+        -:  359:
+      149:  360:        return true;
+        -:  361:    }
+        -:  362:
+        -:  363:
+        -:  364:    // -----------
+        -:  365:    // operator !=
+        -:  366:    // -----------
+        -:  367:
+        -:  368:    /**
+        -:  369:     * <your documentation>
+        -:  370:     */
+function _ZneRK7IntegerIiSt6vectorIiSaIiEEES5_ called 4 returned 100% blocks executed 100%
+        4:  371:    friend bool operator != (const Integer& lhs, const Integer& rhs) {
+        4:  372:        return !(lhs == rhs);}
+call    0 returned 100%
+        -:  373:
+        -:  374:    // ----------
+        -:  375:    // operator <
+        -:  376:    // ----------
+        -:  377:
+        -:  378:    /**
+        -:  379:     * <your documentation>
+        -:  380:     */
+function _ZltRK7IntegerIiSt6vectorIiSaIiEEES5_ called 18 returned 100% blocks executed 83%
+       18:  381:    friend bool operator < (const Integer& lhs, const Integer& rhs) {
+       18:  382:        if(lhs._x.size() < rhs._x.size()){
+call    0 returned 100%
+call    1 returned 100%
+branch  2 taken 11% (fallthrough)
+branch  3 taken 89%
+        2:  383:            if(lhs.positive && !rhs.positive) return false;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+branch  2 taken 0% (fallthrough)
+branch  3 taken 100%
+        2:  384:            else return true;
+        -:  385:        }
+       16:  386:        else if(lhs._x.size() > rhs._x.size()){
+call    0 returned 100%
+call    1 returned 100%
+branch  2 taken 44% (fallthrough)
+branch  3 taken 56%
+        7:  387:            if(!lhs.positive) return true;
+branch  0 taken 29% (fallthrough)
+branch  1 taken 71%
+        5:  388:            else return false;
+        -:  389:        }
+        9:  390:        else if(!lhs.positive && rhs.positive) return true;
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+branch  2 never executed
+branch  3 never executed
+        9:  391:        else if(lhs.positive && !rhs.positive) return false;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+branch  2 taken 0% (fallthrough)
+branch  3 taken 100%
+        -:  392:        else{
+        9:  393:            auto it_l_s = lhs._x.begin();
+call    0 returned 100%
+        9:  394:            auto it_l_e = lhs._x.end();
+call    0 returned 100%
+        9:  395:            auto it_r_s = rhs._x.begin();
+call    0 returned 100%
+        -:  396:
+        9:  397:            while (it_l_s != it_l_e){
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+branch  3 taken 74%
+branch  4 taken 26% (fallthrough)
+       14:  398:                if (*it_l_s++ < *it_r_s++) return true;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+call    3 returned 100%
+branch  4 taken 100% (fallthrough)
+branch  5 taken 0% (throw)
+call    6 returned 100%
+call    7 returned 100%
+branch  8 taken 29% (fallthrough)
+branch  9 taken 71%
+call   10 never executed
+        -:  399:            }
+        -:  400:        }
+        5:  401:        return false;
+        -:  402:    }
+        -:  403:
+        -:  404:    // -----------
+        -:  405:    // operator <=
+        -:  406:    // -----------
+        -:  407:
+        -:  408:    /**
+        -:  409:     * <your documentation>
+        -:  410:     */
+function _ZleRK7IntegerIiSt6vectorIiSaIiEEES5_ called 3 returned 100% blocks executed 100%
+        3:  411:    friend bool operator <= (const Integer& lhs, const Integer& rhs) {
+        3:  412:        return !(rhs < lhs);}
+call    0 returned 100%
+        -:  413:
+        -:  414:    // ----------
+        -:  415:    // operator >
+        -:  416:    // ----------
+        -:  417:
+        -:  418:    /**
+        -:  419:     * <your documentation>
+        -:  420:     */
+function _ZgtRK7IntegerIiSt6vectorIiSaIiEEES5_ called 3 returned 100% blocks executed 100%
+        3:  421:    friend bool operator > (const Integer& lhs, const Integer& rhs) {
+        3:  422:        return (rhs < lhs);}
+call    0 returned 100%
+        -:  423:
+        -:  424:    // -----------
+        -:  425:    // operator >=
+        -:  426:    // -----------
+        -:  427:
+        -:  428:    /**
+        -:  429:     * <your documentation>
+        -:  430:     */
+function _ZgeRK7IntegerIiSt6vectorIiSaIiEEES5_ called 3 returned 100% blocks executed 100%
+        3:  431:    friend bool operator >= (const Integer& lhs, const Integer& rhs) {
+        3:  432:        return !(lhs < rhs);}
+call    0 returned 100%
+        -:  433:
+        -:  434:    // ----------
+        -:  435:    // operator +
+        -:  436:    // ----------
+        -:  437:
+        -:  438:    /**
+        -:  439:     * <your documentation>
+        -:  440:     */
+function _Zpl7IntegerIiSt6vectorIiSaIiEEERKS3_ called 4 returned 100% blocks executed 100%
+        4:  441:    friend Integer operator + (Integer lhs, const Integer& rhs) {
+        4:  442:        return lhs += rhs;}
+call    0 returned 100%
+call    1 returned 100%
+        -:  443:
+        -:  444:    // ----------
+        -:  445:    // operator -
+        -:  446:    // ----------
+        -:  447:
+        -:  448:    /**
+        -:  449:     * <your documentation>
+        -:  450:     */
+function _Zmi7IntegerIiSt6vectorIiSaIiEEERKS3_ called 2 returned 100% blocks executed 100%
+        2:  451:    friend Integer operator - (Integer lhs, const Integer& rhs) {
+        2:  452:        return lhs -= rhs;}
+call    0 returned 100%
+call    1 returned 100%
+        -:  453:
+        -:  454:    // ----------
+        -:  455:    // operator *
+        -:  456:    // ----------
+        -:  457:
+        -:  458:    /**
+        -:  459:     * <your documentation>
+        -:  460:     */
+function _Zml7IntegerIiSt6vectorIiSaIiEEERKS3_ called 3 returned 100% blocks executed 100%
+        3:  461:    friend Integer operator * (Integer lhs, const Integer& rhs) {
+        3:  462:        return lhs *= rhs;}
+call    0 returned 100%
+call    1 returned 100%
+        -:  463:
+        -:  464:    // ----------
+        -:  465:    // operator /
+        -:  466:    // ----------
+        -:  467:
+        -:  468:    /**
+        -:  469:     * <your documentation>
+        -:  470:     * @throws invalid_argument if (rhs == 0)
+        -:  471:     */
+        -:  472:    friend Integer operator / (Integer lhs, const Integer& rhs) {
+        -:  473:        return lhs /= rhs;}
+        -:  474:
+        -:  475:    // ----------
+        -:  476:    // operator %
+        -:  477:    // ----------
+        -:  478:
+        -:  479:    /**
+        -:  480:     * <your documentation>
+        -:  481:     * @throws invalid_argument if (rhs <= 0)
+        -:  482:     */
+        -:  483:    friend Integer operator % (Integer lhs, const Integer& rhs) {
+        -:  484:        return lhs %= rhs;}
+        -:  485:
+        -:  486:    // -----------
+        -:  487:    // operator <<
+        -:  488:    // -----------
+        -:  489:
+        -:  490:    /**
+        -:  491:     * <your documentation>
+        -:  492:     * @throws invalid_argument if (rhs < 0)
+        -:  493:     */
+function _Zls7IntegerIiSt6vectorIiSaIiEEEi called 2 returned 100% blocks executed 100%
+        2:  494:    friend Integer operator << (Integer lhs, int rhs) {
+        2:  495:        return lhs <<= rhs;}
+call    0 returned 100%
+call    1 returned 100%
+        -:  496:
+        -:  497:    // -----------
+        -:  498:    // operator >>
+        -:  499:    // -----------
+        -:  500:
+        -:  501:    /**
+        -:  502:     * <your documentation>
+        -:  503:     * @throws invalid_argument if (rhs < 0)
+        -:  504:     */
+function _Zrs7IntegerIiSt6vectorIiSaIiEEEi called 3 returned 100% blocks executed 100%
+        3:  505:    friend Integer operator >> (Integer lhs, int rhs) {
+        3:  506:        return lhs >>= rhs;}
+call    0 returned 100%
+call    1 returned 100%
+        -:  507:
+        -:  508:    // -----------
+        -:  509:    // operator <<
+        -:  510:    // -----------
+        -:  511:
+        -:  512:    /**
+        -:  513:     * <your documentation>
+        -:  514:     */
+function _ZlsRSoRK7IntegerIiSt6vectorIiSaIiEEE called 3 returned 100% blocks executed 86%
+        3:  515:    friend std::ostream& operator << (std::ostream& lhs, const Integer& rhs) {
+        3:  516:        if (rhs.positive == false){ 
+branch  0 taken 33% (fallthrough)
+branch  1 taken 67%
+        1:  517:            if (!(rhs._x.size() == 1 && rhs._x.front() == 0)) lhs << "-";
+call    0 returned 100%
+branch  1 taken 100% (fallthrough)
+branch  2 taken 0%
+branch  3 taken 100% (fallthrough)
+branch  4 taken 0% (throw)
+call    5 returned 100%
+branch  6 taken 100% (fallthrough)
+branch  7 taken 0%
+branch  8 taken 100% (fallthrough)
+branch  9 taken 0%
+branch 10 taken 100% (fallthrough)
+branch 11 taken 0% (throw)
+call   12 returned 100%
+        -:  518:        }
+        -:  519:
+        3:  520:        auto it_s = rhs._x.begin();
+call    0 returned 100%
+        3:  521:        auto it_e = rhs._x.end();
+call    0 returned 100%
+        -:  522:
+        3:  523:        while (it_s != it_e) lhs << *it_s++;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+call    3 returned 100%
+branch  4 taken 100% (fallthrough)
+branch  5 taken 0% (throw)
+call    6 returned 100%
+branch  7 taken 100% (fallthrough)
+branch  8 taken 0% (throw)
+call    9 returned 100%
+branch 10 taken 73%
+branch 11 taken 27% (fallthrough)
+call   12 never executed
+        3:  524:        return lhs;
+        -:  525:    }
+        -:  526:
+        -:  527:    // ---
+        -:  528:    // abs
+        -:  529:    // ---
+        -:  530:
+        -:  531:    /**
+        -:  532:     * absolute value
+        -:  533:     * <your documentation>
+        -:  534:     */
+function _Z3abs7IntegerIiSt6vectorIiSaIiEEE called 2 returned 100% blocks executed 100%
+        2:  535:    friend Integer abs (Integer x) {
+        2:  536:        return x.abs();}
+call    0 returned 100%
+call    1 returned 100%
+        -:  537:
+        -:  538:    // ---
+        -:  539:    // pow
+        -:  540:    // ---
+        -:  541:
+        -:  542:    /**
+        -:  543:     * power
+        -:  544:     * <your documentation>
+        -:  545:     * @throws invalid_argument if ((x == 0) && (e == 0)) || (e < 0)
+        -:  546:     */
+function _Z3pow7IntegerIiSt6vectorIiSaIiEEEi called 2 returned 100% blocks executed 100%
+        2:  547:    friend Integer pow (Integer x, int e) {
+        2:  548:        return x.pow(e);}
+call    0 returned 100%
+call    1 returned 100%
+        -:  549:
+        -:  550:    private:
+        -:  551:        // ----
+        -:  552:        // data
+        -:  553:        // ----
+        -:  554:
+        -:  555:        C _x; // the backing container
+        -:  556:        // <your data>
+        -:  557:        bool positive;
+        -:  558:
+        -:  559:    private:
+        -:  560:        // -----
+        -:  561:        // valid
+        -:  562:        // -----
+        -:  563:
+        -:  564:        bool valid () const { // class invariant
+        -:  565:            // <your code>
+        -:  566:            // I don't know what to do h
+        -:  567:            return true;}
+        -:  568:
+        -:  569:    public:
+        -:  570:        // ------------
+        -:  571:        // constructors
+        -:  572:        // ------------
+        -:  573:
+        -:  574:        /**
+        -:  575:         * <your documentation>
+        -:  576:         */
+function _ZN7IntegerIiSt6vectorIiSaIiEEEC2Ei called 301 returned 100% blocks executed 72%
+      301:  577:        Integer (int value) {
+call    0 returned 100%
+call    1 never executed
+call    2 never executed
+      301:  578:            value < 0 ? positive = false : positive = true;
+branch  0 taken 23% (fallthrough)
+branch  1 taken 77%
+        -:  579:
+        -:  580:            unsigned tmp;
+      301:  581:            if (value < 0) tmp = ~value + 1;
+branch  0 taken 23% (fallthrough)
+branch  1 taken 77%
+      231:  582:            else  tmp = value;
+        -:  583:
+      301:  584:            deque<T> con;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+        -:  585:
+      301:  586:            if (tmp == 0)
+branch  0 taken 17% (fallthrough)
+branch  1 taken 83%
+       51:  587:                con.push_front(0);
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+        -:  588:            else {
+      979:  589:                while (tmp > 0){
+branch  0 taken 66%
+branch  1 taken 34% (fallthrough)
+      479:  590:                    con.push_front(tmp % 10);
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+      479:  591:                    tmp /= 10;
+        -:  592:                }
+        -:  593:            }
+      301:  594:            _x.resize(con.size());
+call    0 returned 100%
+branch  1 taken 100% (fallthrough)
+branch  2 taken 0% (throw)
+call    3 returned 100%
+      301:  595:            copy(con.begin(), con.end(), _x.begin());
+call    0 returned 100%
+call    1 returned 100%
+call    2 returned 100%
+branch  3 taken 100% (fallthrough)
+branch  4 taken 0% (throw)
+call    5 returned 100%
+call    6 returned 100%
+call    7 never executed
+      301:  596:        }
+        -:  597:
+        -:  598:        /**
+        -:  599:         * <your documentation>
+        -:  600:         * @throws invalid_argument if value is not a valid representation of an Integer
+        -:  601:         */
+function _ZN7IntegerIiSt6vectorIiSaIiEEEC2ERKSs called 2 returned 50% blocks executed 74%
+        3:  602:        explicit Integer (const std::string& value) {
+call    0 returned 100%
+call    1 returned 100%
+call    2 returned 0%
+        -:  603:            char *c;
+        2:  604:            strtol(value.c_str(), &c, 10);
+call    0 returned 100%
+call    1 returned 100%
+        -:  605:
+        2:  606:            if (*c != 0) throw std::invalid_argument("Integer()");
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+call    2 returned 100%
+call    3 returned 100%
+branch  4 taken 100% (fallthrough)
+branch  5 taken 0% (throw)
+call    6 returned 100%
+branch  7 taken 100% (fallthrough)
+branch  8 taken 0% (throw)
+call    9 returned 100%
+call   10 returned 100%
+call   11 returned 100%
+call   12 returned 100%
+call   13 never executed
+call   14 never executed
+call   15 never executed
+        -:  607:
+        1:  608:            positive = true;
+        1:  609:            auto val_f = value.begin();
+call    0 returned 100%
+        1:  610:            auto val_b = value.end();
+call    0 returned 100%
+        -:  611:
+        1:  612:            if (*val_f == 45) //Negative
+call    0 returned 100%
+branch  1 taken 0% (fallthrough)
+branch  2 taken 100%
+        -:  613:            {
+    #####:  614:                positive = false;
+    #####:  615:                val_f++;
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+        -:  616:            }
+        3:  617:            while (val_f != val_b)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+branch  3 taken 50%
+branch  4 taken 50% (fallthrough)
+        -:  618:            {
+        1:  619:                _x.push_back(*val_f++ - 48);
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+call    3 returned 100%
+branch  4 taken 100% (fallthrough)
+branch  5 taken 0% (throw)
+call    6 returned 100%
+        -:  620:            }
+        1:  621:        }
+        -:  622:
+        -:  623:        // Default copy, destructor, and copy assignment.
+        -:  624:        // Integer (const Integer&);
+        -:  625:        // ~Integer ();
+        -:  626:        // Integer& operator = (const Integer&);
+        -:  627:
+        -:  628:        // ----------
+        -:  629:        // operator -
+        -:  630:        // ----------
+        -:  631:
+        -:  632:        /**
+        -:  633:         * <your documentation>
+        -:  634:         */
+function _ZNK7IntegerIiSt6vectorIiSaIiEEEngEv called 4 returned 100% blocks executed 100%
+        4:  635:        Integer operator - () const {
+        4:  636:            Integer tmp = *this;
+call    0 returned 100%
+        -:  637:
+        4:  638:            if (!tmp.positive) tmp.positive = true;
+branch  0 taken 25% (fallthrough)
+branch  1 taken 75%
+        3:  639:            else tmp.positive = false;
+        4:  640:            return tmp;
+        -:  641:        }
+        -:  642:
+        -:  643:        // -----------
+        -:  644:        // operator ++
+        -:  645:        // -----------
+        -:  646:
+        -:  647:        /**
+        -:  648:         * <your documentation>
+        -:  649:         */
+function _ZN7IntegerIiSt6vectorIiSaIiEEEppEv called 6 returned 100% blocks executed 71%
+        6:  650:        Integer& operator ++ () {
+        6:  651:            *this += 1;
+call    0 returned 100%
+branch  1 taken 100% (fallthrough)
+branch  2 taken 0% (throw)
+call    3 returned 100%
+call    4 returned 100%
+call    5 never executed
+call    6 never executed
+        6:  652:            return *this;}
+        -:  653:
+        -:  654:        /**
+        -:  655:         * <your documentation>
+        -:  656:         */
+function _ZN7IntegerIiSt6vectorIiSaIiEEEppEi called 3 returned 100% blocks executed 67%
+        3:  657:        Integer operator ++ (int) {
+        3:  658:            Integer x = *this;
+call    0 returned 100%
+        3:  659:            ++(*this);
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+        3:  660:            return x;}
+call    0 never executed
+call    1 never executed
+        -:  661:
+        -:  662:        // -----------
+        -:  663:        // operator --
+        -:  664:        // -----------
+        -:  665:
+        -:  666:        /**
+        -:  667:         * <your documentation>
+        -:  668:         */
+function _ZN7IntegerIiSt6vectorIiSaIiEEEmmEv called 4 returned 100% blocks executed 71%
+        4:  669:        Integer& operator -- () {
+        4:  670:            *this -= 1;
+call    0 returned 100%
+branch  1 taken 100% (fallthrough)
+branch  2 taken 0% (throw)
+call    3 returned 100%
+call    4 returned 100%
+call    5 never executed
+call    6 never executed
+        4:  671:            return *this;}
+        -:  672:
+        -:  673:        /**
+        -:  674:         * <your documentation>
+        -:  675:         */
+function _ZN7IntegerIiSt6vectorIiSaIiEEEmmEi called 2 returned 100% blocks executed 67%
+        2:  676:        Integer operator -- (int) {
+        2:  677:            Integer x = *this;
+call    0 returned 100%
+        2:  678:            --(*this);
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+        2:  679:            return x;}
+call    0 never executed
+call    1 never executed
+        -:  680:
+        -:  681:        // -----------
+        -:  682:        // operator +=
+        -:  683:        // -----------
+        -:  684:
+        -:  685:        /**
+        -:  686:         * <your documentation>
+        -:  687:         */
+function _ZN7IntegerIiSt6vectorIiSaIiEEEpLERKS3_ called 17 returned 100% blocks executed 80%
+       17:  688:        Integer& operator += (const Integer& rhs) {
+       17:  689:            Integer why = rhs;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+       17:  690:            if(!this->positive && why.positive){
+branch  0 taken 24% (fallthrough)
+branch  1 taken 76%
+branch  2 taken 75% (fallthrough)
+branch  3 taken 25%
+        3:  691:                this->positive = true;
+        3:  692:                if(*this < why){
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+branch  3 taken 33% (fallthrough)
+branch  4 taken 67%
+        1:  693:                    *this = why - *this;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+branch  3 taken 100% (fallthrough)
+branch  4 taken 0% (throw)
+call    5 returned 100%
+call    6 returned 100%
+call    7 returned 100%
+call    8 returned 100%
+call    9 never executed
+        1:  694:                    return *this;
+        -:  695:                }else{
+        2:  696:                    *this -= why;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+        2:  697:                    this->positive = false;
+        2:  698:                    return *this;
+        -:  699:                }
+       14:  700:            }else if(this->positive && !why.positive){
+branch  0 taken 93% (fallthrough)
+branch  1 taken 7%
+branch  2 taken 8% (fallthrough)
+branch  3 taken 92%
+        1:  701:                why.positive = true;
+        1:  702:                if(*this < why){
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+branch  3 taken 100% (fallthrough)
+branch  4 taken 0%
+        1:  703:                    *this = why - *this;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+branch  3 taken 100% (fallthrough)
+branch  4 taken 0% (throw)
+call    5 returned 100%
+call    6 returned 100%
+call    7 returned 100%
+call    8 returned 100%
+call    9 never executed
+        1:  704:                    this->positive = false;
+        1:  705:                    return *this;
+        -:  706:                }else{
+    #####:  707:                    *this -= why;
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+    #####:  708:                    return *this;
+        -:  709:                }
+        -:  710:            }else{
+       13:  711:                auto is_neg = false;
+       13:  712:                if(!this->positive && !why.positive){this->positive = true; why.positive = true; is_neg = true;}
+branch  0 taken 8% (fallthrough)
+branch  1 taken 92%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0%
+       13:  713:                Integer tmp = 0;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+       13:  714:                tmp._x.resize(this->_x.size() + why._x.size());
+call    0 returned 100%
+call    1 returned 100%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0% (throw)
+call    4 returned 100%
+       13:  715:                auto v = plus_digits(this->_x.begin(), this->_x.end(), why._x.begin(), why._x.end(), tmp._x.begin());
+call    0 returned 100%
+call    1 returned 100%
+call    2 returned 100%
+call    3 returned 100%
+call    4 returned 100%
+branch  5 taken 100% (fallthrough)
+branch  6 taken 0% (throw)
+call    7 returned 100%
+       13:  716:                tmp._x.resize(distance(tmp._x.begin(), v));
+call    0 returned 100%
+branch  1 taken 100% (fallthrough)
+branch  2 taken 0% (throw)
+call    3 returned 100%
+branch  4 taken 100% (fallthrough)
+branch  5 taken 0% (throw)
+call    6 returned 100%
+       13:  717:                *this = tmp;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+       13:  718:                if(is_neg){this->positive = false;}
+branch  0 taken 8% (fallthrough)
+branch  1 taken 92%
+       13:  719:                return *this;
+call    0 returned 100%
+call    1 returned 100%
+call    2 never executed
+call    3 never executed
+call    4 never executed
+        -:  720:            }
+        -:  721:        }
+        -:  722:
+        -:  723:        // -----------
+        -:  724:        // operator -=
+        -:  725:        // -----------
+        -:  726:
+        -:  727:        /**
+        -:  728:         * <your documentation>
+        -:  729:         */
+function _ZN7IntegerIiSt6vectorIiSaIiEEEmIERKS3_ called 10 returned 100% blocks executed 72%
+       10:  730:        Integer& operator -= (const Integer& rhs) {
+       10:  731:            Integer why = rhs;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+       10:  732:            if(!this->positive && why.positive){
+branch  0 taken 30% (fallthrough)
+branch  1 taken 70%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0%
+        3:  733:                this->positive = true;
+        3:  734:                *this += why;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+        3:  735:                this->positive = false;
+        3:  736:                return *this;
+        7:  737:            }else if(this->positive && !why.positive){
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+branch  2 taken 0% (fallthrough)
+branch  3 taken 100%
+    #####:  738:                *this += why;
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+    #####:  739:                return *this;
+        -:  740:            }else{
+        -:  741:
+        7:  742:                auto b = false;
+        7:  743:                if(!this->positive && !why.positive){ this->positive = true; why.positive = true; b = true; }
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+branch  2 never executed
+branch  3 never executed
+        7:  744:                Integer tmp = 0;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+        7:  745:                tmp._x.resize(this->_x.size() + why._x.size());
+call    0 returned 100%
+call    1 returned 100%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0% (throw)
+call    4 returned 100%
+        7:  746:                auto v = minus_digits(this->_x.begin(), this->_x.end(), why._x.begin(), why._x.end(), tmp._x.begin());
+call    0 returned 100%
+call    1 returned 100%
+call    2 returned 100%
+call    3 returned 100%
+call    4 returned 100%
+branch  5 taken 100% (fallthrough)
+branch  6 taken 0% (throw)
+call    7 returned 100%
+        7:  747:                tmp._x.resize(distance(tmp._x.begin(), v));
+call    0 returned 100%
+branch  1 taken 100% (fallthrough)
+branch  2 taken 0% (throw)
+call    3 returned 100%
+branch  4 taken 100% (fallthrough)
+branch  5 taken 0% (throw)
+call    6 returned 100%
+        7:  748:                *this = tmp;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+        7:  749:                if(b){this->positive = false;}
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+        7:  750:                return *this;
+call    0 returned 100%
+call    1 returned 100%
+call    2 never executed
+call    3 never executed
+call    4 never executed
+        -:  751:            }
+        -:  752:        }
+        -:  753:
+        -:  754:        // -----------
+        -:  755:        // operator *=
+        -:  756:        // -----------
+        -:  757:
+        -:  758:        /**
+        -:  759:         * <your documentation>
+        -:  760:         */
+function _ZN7IntegerIiSt6vectorIiSaIiEEEmLERKS3_ called 11 returned 100% blocks executed 90%
+       11:  761:        Integer& operator *= (const Integer& rhs) {
+       11:  762:            bool check = true;
+       11:  763:            if(!this->positive && !rhs.positive) check = true;
+branch  0 taken 18% (fallthrough)
+branch  1 taken 82%
+branch  2 taken 50% (fallthrough)
+branch  3 taken 50%
+       10:  764:            else if(!this->positive && rhs.positive) check = false;
+branch  0 taken 10% (fallthrough)
+branch  1 taken 90%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0%
+        9:  765:            else if(this->positive && !rhs.positive) check = false;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+branch  2 taken 11% (fallthrough)
+branch  3 taken 89%
+       11:  766:            Integer tmp = 0;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+       11:  767:            tmp._x.resize(this->_x.size() + rhs._x.size());
+call    0 returned 100%
+call    1 returned 100%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0% (throw)
+call    4 returned 100%
+       11:  768:            auto v = multiplies_digits(this->_x.begin(), this->_x.end(), rhs._x.begin(), rhs._x.end(), tmp._x.begin());
+call    0 returned 100%
+call    1 returned 100%
+call    2 returned 100%
+call    3 returned 100%
+call    4 returned 100%
+branch  5 taken 100% (fallthrough)
+branch  6 taken 0% (throw)
+call    7 returned 100%
+       11:  769:            tmp._x.resize(distance(tmp._x.begin(), v));
+call    0 returned 100%
+branch  1 taken 100% (fallthrough)
+branch  2 taken 0% (throw)
+call    3 returned 100%
+branch  4 taken 100% (fallthrough)
+branch  5 taken 0% (throw)
+call    6 returned 100%
+       11:  770:            *this = tmp;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+       11:  771:            if(!check) this->positive = false;
+branch  0 taken 18% (fallthrough)
+branch  1 taken 82%
+       11:  772:            return *this;
+call    0 returned 100%
+call    1 never executed
+call    2 never executed
+        -:  773:        }
+        -:  774:
+        -:  775:        // -----------
+        -:  776:        // operator /=
+        -:  777:        // -----------
+        -:  778:
+        -:  779:        /**
+        -:  780:         * <your documentation>
+        -:  781:         * @throws invalid_argument if (rhs == 0)
+        -:  782:         */
+        -:  783:        Integer& operator /= (const Integer& rhs) {
+        -:  784:            if (rhs == 0) throw invalid_argument("Integer /=");
+        -:  785:
+        -:  786:            Integer tmp = 0;
+        -:  787:            tmp._x.resize(this->_x.size() + rhs._x.size());
+        -:  788:            divides_digits(this->_x.begin(), this->_x.end(), rhs._x.begin(), rhs._x.end(), tmp._x.begin());
+        -:  789:            *this = tmp;
+        -:  790:            return *this;
+        -:  791:        }
+        -:  792:
+        -:  793:        // -----------
+        -:  794:        // operator %=
+        -:  795:        // -----------
+        -:  796:
+        -:  797:        /**
+        -:  798:         * <your documentation>
+        -:  799:         * @throws invalid_argument if (rhs <= 0)
+        -:  800:         */
+        -:  801:        Integer& operator %= (const Integer& rhs) {
+        -:  802:            auto b = true;
+        -:  803:            if(!this->positive){b = false;}
+        -:  804:            Integer why = rhs;
+        -:  805:            Integer thing = *this;
+        -:  806:            thing = thing / why;
+        -:  807:            thing = thing * why;
+        -:  808:            Integer maybe = 0;
+        -:  809:            maybe._x.resize(this->_x.size() + why._x.size());
+        -:  810:            auto v = minus_digits(this->_x.begin(), this->_x.end(), thing._x.begin(), thing._x.end(), maybe._x.begin());
+        -:  811:            maybe._x.resize(distance(maybe._x.begin(), v));
+        -:  812:            if(!b){this->positive = false;}
+        -:  813:            *this = maybe;
+        -:  814:            return *this;
+        -:  815:        }
+        -:  816:
+        -:  817:        // ------------
+        -:  818:        // operator <<=
+        -:  819:        // ------------
+        -:  820:
+        -:  821:        /**
+        -:  822:         * <your documentation>
+        -:  823:         */
+function _ZN7IntegerIiSt6vectorIiSaIiEEElSEi called 2 returned 100% blocks executed 79%
+        2:  824:        Integer& operator <<= (int n) {
+        2:  825:            Integer tmp = 0;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+        2:  826:            tmp.positive = this->positive;
+        2:  827:            tmp._x.resize(this->_x.size() + n);
+call    0 returned 100%
+branch  1 taken 100% (fallthrough)
+branch  2 taken 0% (throw)
+call    3 returned 100%
+        2:  828:            shift_left_digits(this->_x.begin(), this->_x.end(), n, tmp._x.begin());
+call    0 returned 100%
+call    1 returned 100%
+call    2 returned 100%
+branch  3 taken 100% (fallthrough)
+branch  4 taken 0% (throw)
+call    5 returned 100%
+        2:  829:            *this = tmp;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+        2:  830:            return *this;
+call    0 returned 100%
+call    1 never executed
+call    2 never executed
+        -:  831:        }
+        -:  832:
+        -:  833:        // ------------
+        -:  834:        // operator >>=
+        -:  835:        // ------------
+        -:  836:
+        -:  837:        /**
+        -:  838:         * <your documentation>
+        -:  839:         */
+function _ZN7IntegerIiSt6vectorIiSaIiEEErSEi called 3 returned 100% blocks executed 75%
+        3:  840:        Integer& operator >>= (int n) {
+        3:  841:            Integer tmp = 0;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+        3:  842:            tmp.positive = this->positive;
+        3:  843:            shift_right_digits(this->_x.begin(), this->_x.end(), n, tmp._x.begin());
+call    0 returned 100%
+call    1 returned 100%
+call    2 returned 100%
+branch  3 taken 100% (fallthrough)
+branch  4 taken 0% (throw)
+call    5 returned 100%
+        3:  844:            *this = tmp;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+        3:  845:            return *this;
+call    0 returned 100%
+call    1 never executed
+call    2 never executed
+        -:  846:        }
+        -:  847:
+        -:  848:        // ---
+        -:  849:        // abs
+        -:  850:        // ---
+        -:  851:
+        -:  852:        /**
+        -:  853:         * absolute value
+        -:  854:         * <your documentation>
+        -:  855:         */
+function _ZN7IntegerIiSt6vectorIiSaIiEEE3absEv called 4 returned 100% blocks executed 100%
+        4:  856:        Integer& abs () {
+        4:  857:            if(this->positive){
+branch  0 taken 25% (fallthrough)
+branch  1 taken 75%
+        1:  858:                this->positive = false;
+        3:  859:            }else{ this->positive = true;}
+        4:  860:            return *this;}
+        -:  861:
+        -:  862:        // ---
+        -:  863:        // pow
+        -:  864:        // ---
+        -:  865:
+        -:  866:        /**
+        -:  867:         * power
+        -:  868:         * <your documentation>
+        -:  869:         * @throws invalid_argument if ((this == 0) && (e == 0)) or (e < 0)
+        -:  870:         */
+function _ZN7IntegerIiSt6vectorIiSaIiEEE3powEi called 3 returned 100% blocks executed 45%
+        3:  871:        Integer& pow (int e) {
+        3:  872:            if (((this == 0) && (e == 0)) || (e < 0))
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+branch  2 never executed
+branch  3 never executed
+branch  4 taken 0% (fallthrough)
+branch  5 taken 100%
+    #####:  873:                throw invalid_argument("Integer: power");
+call    0 never executed
+call    1 never executed
+branch  2 never executed
+branch  3 never executed
+call    4 never executed
+branch  5 never executed
+branch  6 never executed
+call    7 never executed
+call    8 never executed
+call    9 never executed
+call   10 never executed
+call   11 never executed
+call   12 never executed
+call   13 never executed
+        -:  874:
+        3:  875:            Integer tmp = 1;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+       12:  876:            while (e > 0){
+branch  0 taken 67%
+branch  1 taken 33% (fallthrough)
+        6:  877:                if (e % 2 == 1){
+branch  0 taken 67% (fallthrough)
+branch  1 taken 33%
+        4:  878:                    tmp *= *this;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+        4:  879:                    e -= 1; 
+        -:  880:                }else{
+        2:  881:                *this *= *this;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+        2:  882:                e /= 2;}
+        -:  883:            }
+        3:  884:            *this = tmp;
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0% (throw)
+call    2 returned 100%
+        3:  885:            return *this;
+call    0 returned 100%
+call    1 never executed
+call    2 never executed
+        -:  886:        }
+        -:  887:};
+        -:  888:
+        -:  889:#endif // Integer_h
